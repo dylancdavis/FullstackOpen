@@ -1,6 +1,16 @@
+Exercise 0.3:
+
+```mermaid
 sequenceDiagram
     participant browser
     participant server
+
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+    activate server
+    server-->>browser: 302 found, URL redirect
+    deactivate server
+
+    Note right of browser: The browser receives a URL redirect, so it sends out a new HTTP GET message to the address notes.
     
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
@@ -24,4 +34,5 @@ sequenceDiagram
     server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
     deactivate server    
 
-    Note right of browser: The browser executes the callback function that renders the notes 
+    Note right of browser: The browser executes the callback function that renders the notes
+```
