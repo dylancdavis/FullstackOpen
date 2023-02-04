@@ -1,4 +1,4 @@
-Exercise 0.3:
+Exercise 0.4:
 
 ```mermaid
 sequenceDiagram
@@ -37,7 +37,7 @@ sequenceDiagram
     Note right of browser: The browser executes the callback function that renders the notes
 ```
 
-Exercise 0.4:
+Exercise 0.5:
 
 ```mermaid
 sequenceDiagram
