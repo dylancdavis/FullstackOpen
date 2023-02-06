@@ -9,19 +9,41 @@ const App = () => {
 
   return (
     <div>
-      <h1>{course}</h1>
-      <p>
-        {part1} {exercises1}
-      </p>
-      <p>
-        {part2} {exercises2}
-      </p>
-      <p>
-        {part3} {exercises3}
-      </p>
-      <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+      <Header course={course} />
+      <Content 
+        p1={part1}
+        e1 = {exercises1}
+        p2={part2}
+        e2 = {exercises2}
+        p3={part3}
+        e3 = {exercises3}
+      />
+      <Total 
+        exercises1={exercises1}
+        exercises2={exercises2}
+        exercises3={exercises3}
+      />
+
     </div>
   )
 }
+
+const Header = ({course}) => <h1>{course}</h1>
+
+const Content = ({p1, e1, p2, e2, p3, e3}) => (
+      <>
+        <p>
+          {p1} {e1}
+        </p>
+        <p>
+          {p2} {e2}
+        </p>
+        <p>
+          {p3} {e3}
+        </p>
+      </>
+)
+
+const Total = ({exercises1, exercises2, exercises3}) => <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
 
 export default App
