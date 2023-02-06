@@ -32,16 +32,14 @@ const Header = ({course}) => <h1>{course}</h1>
 
 const Content = ({p1, e1, p2, e2, p3, e3}) => (
       <>
-        <p>
-          {p1} {e1}
-        </p>
-        <p>
-          {p2} {e2}
-        </p>
-        <p>
-          {p3} {e3}
-        </p>
+        <Part part={p1} exercises={e1} />
+        <Part part={p2} exercises={e2} />
+        <Part part={p3} exercises={e3} />
       </>
+)
+
+const Part = ({part, exercises}) => (
+  <p>{part} {exercises}</p>
 )
 
 const Total = ({exercises1, exercises2, exercises3}) => <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
