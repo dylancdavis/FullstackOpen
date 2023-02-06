@@ -48,23 +48,46 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <p>Search by Name</p>
-      <input value={searchName} onChange={handleSearchChange} />
-      {getFilteredNames().map(p => <p key={p.name}>{p.name} {p.number}</p>)}
+      <PersonForm 
+        newName={newName}
+        newNumber={newNumber}
+        onNameChange={handleNameChange}
+        onNumberChange={handleNumberChange}
+        onSubmit={handleSubmit}
+      />
+      <SearchNames searchName={searchName} onSearchChange={handleSearchChange} />
+      <Numbers filteredNames={getFilteredNames()} />
+
     </div>
   )
 }
+
+const PersonForm = ({newName, newNumber, onNameChange, onNumberChange, onSubmit}) => (
+  <form onSubmit={onSubmit}>
+        <div>
+          name: <input value={newName} onChange={onNameChange} />
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={onNumberChange} />
+        </div>
+        <div>
+          <button type="submit">Add Person</button>
+        </div>
+      </form>
+)
+
+const Numbers = ({filteredNames}) =>  (
+  <>
+    <h2>Numbers</h2>
+    <p>Search by Name</p>
+    {filteredNames.map(p => <p key={p.name}>{p.name} {p.number}</p>)}
+  </>
+)
+
+const SearchNames = ({searchName, onSearchChange}) => (
+  <div>
+    Search: <input value={searchName} onChange={onSearchChange} />
+  </div>
+)
 
 export default App
