@@ -10,22 +10,33 @@ const App = () => {
   const handleNeutral = () => setNeutral(neutral+1)
   const handleBad = () => setBad(bad+1)
 
-  return (<Statistics 
-    good={good}
-    neutral={neutral}
-    bad={bad}
-    handleGood={handleGood}
-    handleNeutral={handleNeutral}
-    handleBad={handleBad}
-  />)
+  return (
+    <div>
+      <Feedback 
+        handleGood={handleGood}
+        handleNeutral={handleNeutral}
+        handleBad={handleBad}
+      />
+      <Statistics 
+        good={good}
+        neutral={neutral}
+        bad={bad}
+      />
+    </div>)
 }
 
-const Statistics = ({good, neutral, bad, handleGood, handleNeutral, handleBad}) => (
-  <div>
-      <h1>give feedback</h1>
-      <button onClick={handleGood}>good</button>
-      <button onClick={handleNeutral}>neutral</button>
-      <button onClick={handleBad}>bad</button>
+const Feedback = ({handleGood, handleNeutral, handleBad}) => (
+  <>
+    <h1>give feedback</h1>
+    <button onClick={handleGood}>good</button>
+    <button onClick={handleNeutral}>neutral</button>
+    <button onClick={handleBad}>bad</button>
+  </>
+)
+
+const Statistics = ({good, neutral, bad}) => {
+  if (good || neutral || bad) {
+    return (<>
       <h1>statistics</h1>
       <p>good {good}</p>
       <p>neutral {neutral}</p>
@@ -33,7 +44,13 @@ const Statistics = ({good, neutral, bad, handleGood, handleNeutral, handleBad}) 
       <p>all {good+neutral+bad}</p>
       <p>average {(good-bad)/(good+neutral+bad)}</p>
       <p>positive {(good/(good+neutral+bad))} %</p>
-    </div>
-)
+  </>)
+  } else {
+    return (<>
+      <h1>statistics</h1>
+      <p>No feedback given</p>
+  </>)
+  }
+}
 
 export default App
