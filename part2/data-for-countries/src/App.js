@@ -14,6 +14,12 @@ const App = () => {
     .then(r => setCountries(r.data))
   }, [])
 
+  const handleShow = name => {
+    return () => {
+      setInputText(name)
+    }
+  }
+
   return (
   <div>
     <h1>Countries</h1>
@@ -22,12 +28,12 @@ const App = () => {
       <input value={inputText} onChange={(e)=> setInputText(e.target.value)} />
     </div>
     <hr></hr>
-    <CountryList countries={countries} searchText={inputText} />
+    <CountryList countries={countries} searchText={inputText} handleShow={handleShow} />
   </div>
   )
 }
 
-const CountryList = ({countries, searchText}) => {
+const CountryList = ({countries, searchText, handleShow}) => {
   if (searchText === '') {
     return <p>Please search for a country.</p>
   }
@@ -42,7 +48,20 @@ const CountryList = ({countries, searchText}) => {
     return <CountryItem country={filteredList[0]} />
   }
 
-  return filteredList.map(d => <p key={d.cca3}>{d.flag} {d.name.common}</p>)
+  return (
+    <table>
+      <tbody>
+        {
+           filteredList.map(d => (
+            <tr>
+              <td key={d.cca3}>{d.flag} {d.name.common}  </td>
+              <td><button onClick={handleShow(d.name.common)}>Show</button></td>
+            </tr>
+          ) )
+        }
+      </tbody>
+    </table>
+  )
 
 }
 
