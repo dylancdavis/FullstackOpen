@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { getAll, create } from './services/people'
+import { getAll, create, remove } from './services/people'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -52,6 +52,15 @@ const App = () => {
     setNewNumber('')
   }
 
+  const handleRemove = (id,name) => {
+    return () => {
+      if (window.confirm(`Delete ${name} from phonebook?`)) {
+        remove(id)
+        setPersons(persons.filter(p => p.id !== id))
+      }
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -63,7 +72,7 @@ const App = () => {
         onSubmit={handleSubmit}
       />
       <SearchNames searchName={searchName} onSearchChange={handleSearchChange} />
-      <Numbers filteredNames={getFilteredNames()} />
+      <Numbers filteredNames={getFilteredNames()} handleRemove={handleRemove} />
 
     </div>
   )
@@ -83,10 +92,14 @@ const PersonForm = ({newName, newNumber, onNameChange, onNumberChange, onSubmit}
       </form>
 )
 
-const Numbers = ({filteredNames}) =>  (
+const Numbers = ({filteredNames, handleRemove}) =>  (
   <>
     <h2>Numbers</h2>
-    {filteredNames.map(p => <p key={p.name}>{p.name} {p.number}</p>)}
+    {filteredNames.map(p => (
+    <div key={p.id}>
+        <span>{p.name} {p.number}</span>
+        <button onClick={handleRemove(p.id,p.name)}>x</button>
+    </div>))}
   </>
 )
 
