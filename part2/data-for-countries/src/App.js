@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import { getAll } from './services/countries';
 
+const api_key = process.env.REACT_APP_API_KEY
+
 const App = () => {
 
   const [countries,setCountries] = useState(null)
@@ -53,8 +55,8 @@ const CountryList = ({countries, searchText, handleShow}) => {
       <tbody>
         {
            filteredList.map(d => (
-            <tr>
-              <td key={d.cca3}>{d.flag} {d.name.common}  </td>
+            <tr key={d.cca3}>
+              <td>{d.flag} {d.name.common}  </td>
               <td><button onClick={handleShow(d.name.common)}>Show</button></td>
             </tr>
           ) )
@@ -66,17 +68,51 @@ const CountryList = ({countries, searchText, handleShow}) => {
 }
 
 const CountryItem = ({country}) => {
-  console.log(country);
+  
+  //console.log(country);
+
+  const [weather,setWeather] = useState(null)
+
+  useEffect(() => {
+    axios.get(`http://api.openweathermap.org/data/2.5/weather?q=${country.capital}&APPID=${api_key}`)
+    .then(r => {
+      setWeather(r.data)
+      console.log(r.data);
+    })
+  }, [])
+
+
+
   return (
     <>
       <h1>{country.name.common} {country.flag}</h1>
-      {country.name.common !== country.name. official && <p><i>({country.name.official})</i></p>}
+      {country.name.common !== country.name.official && <p><i>({country.name.official})</i></p>}
       <p><i>Capital:</i> {country.capital}</p>
       <p><i>Area:</i> {country.area}</p>
       <h6>Languages: </h6>
       <ul>
         {Object.values(country.languages).map(p => <li key={p}>{p}</li>)}
       </ul>
+      <h2>Weather in {country.capital}:</h2>
+      <WeatherSection weather={weather} />
+    </>
+  )
+}
+
+const WeatherSection = ({ weather }) => {
+  if (!weather) return null
+
+  const type = weather.weather[0].main
+  const icon = weather.weather[0].icon
+  const kelvin = weather.main.feels_like
+  const fahrenheit = Math.round(1.8*(kelvin - 273) + 32)
+  const windSpeed = weather.wind.speed
+
+  return (
+    <>
+      <p>{type} <img src={`http://openweathermap.org/img/wn/${icon}.png`} /></p>
+      <p>Feels Like {fahrenheit}°F</p>
+      <p>Wind speed of {windSpeed}m/s</p>
     </>
   )
 }
