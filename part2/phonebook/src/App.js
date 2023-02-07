@@ -1,6 +1,5 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { getAll, create, remove } from './services/people'
+import { getAll, create, update, remove } from './services/people'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -35,19 +34,20 @@ const App = () => {
 
     if (!newName) return;
 
+    let newPerson = { name: newName, number: newNumber}
     let names = persons.map(p => p.name)
+
     if (names.includes(newName)) {
-      alert(`${newName} is already in the phonebook.`)
+      
+      let id = (persons.filter(p => p.name === newName)[0].id)
+      if (window.confirm(`${newName} is already in the phonebook. Replace number?`)) {
+        update(id,newPerson)
+        setPersons(persons.map(p => p.id === id ? newPerson : p))
+      }
       return
     }
 
-    let newPerson = { name: newName, number: newNumber}
-
     create(newPerson).then(p => setPersons(persons.concat(p)))
-
-    // axios
-    //   .post('http://localhost:3001/persons', newPerson)
-    //   .then(r => setPersons(persons.concat(r.data)))
     setNewName('')
     setNewNumber('')
   }
