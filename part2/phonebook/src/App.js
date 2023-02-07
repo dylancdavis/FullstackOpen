@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { getAll, create } from './services/people'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -8,12 +9,7 @@ const App = () => {
   const [searchName, setSearchName] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(r => {
-        setPersons(r.data)
-        console.log(r.data);
-      })
+    getAll().then(r => setPersons(r))
   }, [])
 
 
@@ -47,9 +43,11 @@ const App = () => {
 
     let newPerson = { name: newName, number: newNumber}
 
-    axios
-      .post('http://localhost:3001/persons', newPerson)
-      .then(r => setPersons(persons.concat(r.data)))
+    create(newPerson).then(p => setPersons(persons.concat(p)))
+
+    // axios
+    //   .post('http://localhost:3001/persons', newPerson)
+    //   .then(r => setPersons(persons.concat(r.data)))
     setNewName('')
     setNewNumber('')
   }
