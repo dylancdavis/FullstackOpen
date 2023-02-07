@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { getAll, create, update, remove } from './services/people'
+import './app.css'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearchName] = useState('')
+  const [alertMessage, setAlertMessage] = useState(null)
 
   useEffect(() => {
     getAll().then(r => setPersons(r))
@@ -34,20 +36,42 @@ const App = () => {
 
     if (!newName) return;
 
-    let newPerson = { name: newName, number: newNumber}
+    let newPerson = { name: newName, number: newNumber }
     let names = persons.map(p => p.name)
 
     if (names.includes(newName)) {
-      
+
       let id = (persons.filter(p => p.name === newName)[0].id)
       if (window.confirm(`${newName} is already in the phonebook. Replace number?`)) {
-        update(id,newPerson)
-        setPersons(persons.map(p => p.id === id ? newPerson : p))
+        update(id,newPerson).then(() => {
+          setAlertMessage({
+            text: `${newName} updated.`,
+            type: 'info'
+          })
+          setPersons(persons.map(p => p.id === id ? {...newPerson, id: id} : p))
+        }).catch(() => {
+          setPersons(persons.filter(p => p.id !== id))
+          setAlertMessage({
+            text: `Error: ${newName} does not exist on server, deleting.`,
+            type: 'fail'
+          })
+        })
+        setTimeout(() => setAlertMessage(null), 2000)
+
       }
       return
     }
 
-    create(newPerson).then(p => setPersons(persons.concat(p)))
+    create(newPerson).then(p => {
+      setPersons(persons.concat(p))
+      console.log('trig');
+      setAlertMessage({
+        text: `${p.name} added to phonebook.`,
+        type: 'success'
+      })
+      
+      setTimeout(() => setAlertMessage(null), 2000)
+    } )
     setNewName('')
     setNewNumber('')
   }
@@ -57,6 +81,11 @@ const App = () => {
       if (window.confirm(`Delete ${name} from phonebook?`)) {
         remove(id)
         setPersons(persons.filter(p => p.id !== id))
+        setAlertMessage({
+          text: `${name} removed from phonebook.`,
+          type: 'info'
+        })
+        setTimeout(() => setAlertMessage(null), 2000)
       }
     }
   }
@@ -64,6 +93,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <AlertMessage {...alertMessage} />
       <PersonForm 
         newName={newName}
         newNumber={newNumber}
@@ -76,6 +106,11 @@ const App = () => {
 
     </div>
   )
+}
+
+const AlertMessage = ({text, type}) => {
+  if (text) return <p className={`message ${type}`}>{text}</p>
+  return null
 }
 
 const PersonForm = ({newName, newNumber, onNameChange, onNumberChange, onSubmit}) => (

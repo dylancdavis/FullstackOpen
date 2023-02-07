@@ -1,0 +1,14 @@
+.message {
+    font-size: 32px;
+    background-color: gainsboro;
+    border: 2px solid black;
+    padding: 8px;
+}
+
+.message.success {
+    background-color: lightgreen;
+}
+
+.message.fail {
+    background-color: lightcoral;
+}
