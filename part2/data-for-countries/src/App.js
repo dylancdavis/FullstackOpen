@@ -1,25 +1,65 @@
-import logo from './logo.svg';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import './App.css';
+import { getAll } from './services/countries';
 
-function App() {
+const App = () => {
+
+  const [countries,setCountries] = useState(null)
+  const [inputText, setInputText] = useState('')
+
+  useEffect(() => {
+    axios
+    .get('https://restcountries.com/v3.1/all')
+    .then(r => setCountries(r.data))
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  <div>
+    <h1>Countries</h1>
+    <div>
+      <span>Search for Countries: </span>
+      <input value={inputText} onChange={(e)=> setInputText(e.target.value)} />
     </div>
-  );
+    <hr></hr>
+    <CountryList countries={countries} searchText={inputText} />
+  </div>
+  )
+}
+
+const CountryList = ({countries, searchText}) => {
+  if (searchText === '') {
+    return <p>Please search for a country.</p>
+  }
+  
+  const filteredList = countries.filter(d => d.name.common.toLowerCase().includes(searchText.toLowerCase()))
+  
+  if (filteredList.length > 10) {
+    return <p>Match too broad, keep typing...</p>
+  }
+
+  if (filteredList.length === 1) {
+    return <CountryItem country={filteredList[0]} />
+  }
+
+  return filteredList.map(d => <p key={d.cca3}>{d.flag} {d.name.common}</p>)
+
+}
+
+const CountryItem = ({country}) => {
+  console.log(country);
+  return (
+    <>
+      <h1>{country.name.common} {country.flag}</h1>
+      {country.name.common !== country.name. official && <p><i>({country.name.official})</i></p>}
+      <p><i>Capital:</i> {country.capital}</p>
+      <p><i>Area:</i> {country.area}</p>
+      <h6>Languages: </h6>
+      <ul>
+        {Object.values(country.languages).map(p => <li key={p}>{p}</li>)}
+      </ul>
+    </>
+  )
 }
 
 export default App;
