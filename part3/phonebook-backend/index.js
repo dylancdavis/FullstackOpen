@@ -68,16 +68,35 @@ app.delete('/api/persons/:id', (request, response) => {
   }
 })
 
+// POST new person, automatically generated ID
 app.post('/api/persons', (request, response) => {
   const newID = Math.floor(Math.random() * 1000)
   const newObj = {id: newID, ...request.body}
   console.log('Post request with headers:', request.headers);
+
+  // Check for both properties
+  if (!newObj.name || !newObj.number) {
+    console.log('post denied, missing properties');
+    response.status(400).json({error: 'missing object properties'})
+    return
+  }
+
+  // Check that person does not already exist
+  if (persons.map(p => p.name).includes(newObj.name)) {
+    console.log(`post denied, ${newObj.name} already exists`);
+    response.status(400).json({error: 'person already exists'})
+    return
+  }
+
+  // Create and push person
   console.log('Adding:',newObj);
   persons.push(newObj)
   console.log(persons);
   response.json(newObj)
 
 })
+
+// Some weird stuff is going on rn
 
 
 const PORT = 3001;
