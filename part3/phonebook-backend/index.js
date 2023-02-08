@@ -1,14 +1,10 @@
 const express = require('express')
 const morgan = require('morgan')
 
-
-
 const app = express()
-
 app.use(express.json())
 
 morgan.token('posted', req => JSON.stringify(req.body))
-
 app.use(morgan('tiny', { skip: req => req.method === 'POST' }))
 app.use(morgan(':url :method :status :res[content-length] - :response-time ms :posted', {
   skip: req => req.method !== 'POST'
@@ -94,9 +90,6 @@ app.post('/api/persons', (request, response) => {
   response.json(newObj)
 
 })
-
-// Some weird stuff is going on rn
-
 
 const PORT = 3001;
 
