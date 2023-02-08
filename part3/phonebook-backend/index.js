@@ -2,6 +2,8 @@ const express = require('express')
 
 const app = express()
 
+app.use(express.json())
+
 let persons = [
     { 
       "id": 1,
@@ -51,6 +53,7 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
+// DELETE person by ID
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   console.log(`DELETE ${id}`);
@@ -63,6 +66,17 @@ app.delete('/api/persons/:id', (request, response) => {
     console.log(`ID ${id} not found`);
     response.status(404).end()
   }
+})
+
+app.post('/api/persons', (request, response) => {
+  const newID = Math.floor(Math.random() * 1000)
+  const newObj = {id: newID, ...request.body}
+  console.log('Post request with headers:', request.headers);
+  console.log('Adding:',newObj);
+  persons.push(newObj)
+  console.log(persons);
+  response.json(newObj)
+
 })
 
 
