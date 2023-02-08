@@ -1,8 +1,12 @@
 const express = require('express')
+const morgan = require('morgan')
+
+
 
 const app = express()
 
 app.use(express.json())
+app.use(morgan('tiny'))
 
 let persons = [
     { 
@@ -31,20 +35,17 @@ let persons = [
 app.get('/info', (request, response) => {
   const firstLine = `Phonebook has info for ${persons.length} people`
   const secondLine = new Date();
-  console.log('request info');
   response.send(`<p>${firstLine}</p><p>${secondLine}</p>`)
 })
 
 // GET all persons
 app.get('/api/persons', (request, response) => {
-  console.log('request for all persons');
   response.json(persons)
 })
 
 // GET person by ID
 app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id);
-  console.log(`GET ${id}`);
   const person = persons.find(p => p.id === id)
   if (person) {
     response.json(person)
@@ -56,14 +57,11 @@ app.get('/api/persons/:id', (request, response) => {
 // DELETE person by ID
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  console.log(`DELETE ${id}`);
   const person = persons.find(p => p.id === id)
   if (person) {
     persons = persons.filter(p => p.id !== id)
-    console.log(`ID ${id} deleted.`,persons);
     response.status(204).end()
   } else {
-    console.log(`ID ${id} not found`);
     response.status(404).end()
   }
 })
@@ -72,26 +70,21 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
   const newID = Math.floor(Math.random() * 1000)
   const newObj = {id: newID, ...request.body}
-  console.log('Post request with headers:', request.headers);
 
   // Check for both properties
   if (!newObj.name || !newObj.number) {
-    console.log('post denied, missing properties');
     response.status(400).json({error: 'missing object properties'})
     return
   }
 
   // Check that person does not already exist
   if (persons.map(p => p.name).includes(newObj.name)) {
-    console.log(`post denied, ${newObj.name} already exists`);
     response.status(400).json({error: 'person already exists'})
     return
   }
 
   // Create and push person
-  console.log('Adding:',newObj);
   persons.push(newObj)
-  console.log(persons);
   response.json(newObj)
 
 })
