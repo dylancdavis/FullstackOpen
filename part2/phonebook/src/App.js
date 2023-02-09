@@ -39,6 +39,7 @@ const App = () => {
     let newPerson = { name: newName, number: newNumber }
     let names = persons.map(p => p.name)
 
+    // Case: person already exists (same name)
     if (names.includes(newName)) {
 
       let id = (persons.filter(p => p.name === newName)[0].id)
