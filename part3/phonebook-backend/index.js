@@ -8,7 +8,7 @@ app.use(cors())
 
 morgan.token('posted', req => JSON.stringify(req.body))
 app.use(morgan('tiny', { skip: req => req.method === 'POST' }))
-app.use(morgan(':url :method :status :res[content-length] - :response-time ms :posted', {
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :posted', {
   skip: req => req.method !== 'POST'
 }))
 

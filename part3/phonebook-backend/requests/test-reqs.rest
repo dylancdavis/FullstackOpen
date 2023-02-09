@@ -1,4 +1,4 @@
-GET http://localhost:3001/api/persons
+GET https://blue-waterfall-1384.fly.dev/api/persons
 
 ###
 GET http://localhost:3001/api/persons/3
@@ -9,7 +9,7 @@ DELETE http://localhost:3001/api/persons/3
 ###
 # Will succeed the first time
 # And fail on subsequent requests
-POST http://localhost:3001/api/persons
+POST https://blue-waterfall-1384.fly.dev/api/persons
 Content-Type: application/json
 
 {
