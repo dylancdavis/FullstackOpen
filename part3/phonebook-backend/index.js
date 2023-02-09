@@ -52,31 +52,27 @@ app.get('/api/persons', (request, response) => {
 
 // GET person by ID
 app.get('/api/persons/:id', (request, response) => {
+  Person.findById(request.params.id)
+    .then(r => {
+      if (r) {
+        response.json(r)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(e => {
+      console.log(e);
+      if (e.name === 'CastError') response.status(400).json({error: 'Malformed ID'})
+      response.status(500).end()
+    })
   const id = Number(request.params.id);
-  const person = persons.find(p => p.id === id)
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
 })
 
 // DELETE person by ID
-// app.delete('/api/persons/:id', (request, response) => {
-//   const id = Number(request.params.id)
-//   const person = persons.find(p => p.id === id)
-//   if (person) {
-//     persons = persons.filter(p => p.id !== id)
-//     response.status(204).end()
-//   } else {
-//     response.status(404).end()
-//   }
-// })
-
 app.delete('/api/persons/:id', (request, response) => {
   Person.findByIdAndRemove(request.params.id)
     .then(r=> response.status(204).end())
-    .catch(e => console.log(error))
+    .catch(e => console.log(e))
 })
 
 // POST new person, automatically generated ID
