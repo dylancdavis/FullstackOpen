@@ -75,26 +75,32 @@ app.delete('/api/persons/:id', (request, response) => {
 
 // POST new person, automatically generated ID
 app.post('/api/persons', (request, response) => {
-  const newID = Math.floor(Math.random() * 1000)
-  const newObj = {id: newID, ...request.body}
 
   // Check for both properties
-  if (!newObj.name || !newObj.number) {
+  if (!request.body.name || !request.body.number) {
     response.status(400).json({error: 'missing object properties'})
     return
   }
 
   // Check that person does not already exist
-  if (persons.map(p => p.name).includes(newObj.name)) {
-    response.status(400).json({error: 'person already exists'})
-    return
-  }
+  // if (persons.map(p => p.name).includes(newObj.name)) {
+  //   response.status(400).json({error: 'person already exists'})
+  //   return
+  // }
 
-  // Create and push person
-  persons.push(newObj)
-  response.json(newObj)
+  const p = new Person ({
+    name: request.body.name,
+    number: request.body.number
+  })
+
+  p.save().then(r => {
+    console.log(`${p.name} (${p.number}) addded to phonebook`)
+    response.status(201).json(p);
+  })
 
 })
+
+
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })

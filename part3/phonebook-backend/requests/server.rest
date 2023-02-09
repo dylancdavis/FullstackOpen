@@ -1,0 +1,27 @@
+GET https://blue-waterfall-1384.fly.dev/api/persons
+
+###
+GET https://blue-waterfall-1384.fly.dev/api/persons/3
+
+###
+DELETE https://blue-waterfall-1384.fly.dev/api/persons/3
+
+###
+# Will succeed the first time
+# And fail on subsequent requests
+POST https://blue-waterfall-1384.fly.dev/api/persons
+Content-Type: application/json
+
+{
+    "name": "Alan Turing",
+    "number": "87-1343-12324"
+}
+
+###
+# Will fail, missing number
+POST https://blue-waterfall-1384.fly.dev/api/persons
+Content-Type: application/json
+
+{
+    "name": "Alan Turing"
+}
