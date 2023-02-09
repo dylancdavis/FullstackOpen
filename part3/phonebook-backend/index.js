@@ -62,15 +62,21 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 // DELETE person by ID
+// app.delete('/api/persons/:id', (request, response) => {
+//   const id = Number(request.params.id)
+//   const person = persons.find(p => p.id === id)
+//   if (person) {
+//     persons = persons.filter(p => p.id !== id)
+//     response.status(204).end()
+//   } else {
+//     response.status(404).end()
+//   }
+// })
+
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(p => p.id === id)
-  if (person) {
-    persons = persons.filter(p => p.id !== id)
-    response.status(204).end()
-  } else {
-    response.status(404).end()
-  }
+  Person.findByIdAndRemove(request.params.id)
+    .then(r=> response.status(204).end())
+    .catch(e => console.log(error))
 })
 
 // POST new person, automatically generated ID
@@ -99,8 +105,6 @@ app.post('/api/persons', (request, response) => {
   })
 
 })
-
-
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
