@@ -36,6 +36,8 @@ let persons = [
     }
 ]
 
+const Person = require('./models/person.js')
+
 // GET info
 app.get('/info', (request, response) => {
   const firstLine = `Phonebook has info for ${persons.length} people`
@@ -45,7 +47,7 @@ app.get('/info', (request, response) => {
 
 // GET all persons
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(p => response.json(p))
 })
 
 // GET person by ID
