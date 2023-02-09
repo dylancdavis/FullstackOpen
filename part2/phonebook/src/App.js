@@ -64,7 +64,6 @@ const App = () => {
 
     create(newPerson).then(p => {
       setPersons(persons.concat(p))
-      console.log('trig');
       setAlertMessage({
         text: `${p.name} added to phonebook.`,
         type: 'success'
