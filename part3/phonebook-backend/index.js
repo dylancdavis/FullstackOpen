@@ -92,11 +92,8 @@ app.post('/api/persons', (request, response) => {
 
 })
 
-app.put('api/persons/:id', (request, response, next) => {
+app.put('/api/persons/:id', (request, response, next) => {
 
-  console.log('put detected');
-
-  const id = request.params.id
   const objName = request.body.name
   const objNumber = request.body.number
 
@@ -104,12 +101,12 @@ app.put('api/persons/:id', (request, response, next) => {
   if (!objName) return response.status(400).json({error: 'name property missing'})
   if (!objNumber) return response.status(400).json({error: 'number property missing'})
 
-  const p = new Person ({
+  const p = {
     name: request.body.name,
     number: request.body.number
-  })
+  }
 
-  Person.findByIdAndUpdate(id, p, {new: true})
+  Person.findByIdAndUpdate(request.params.id, p, {new: true})
     .then(updated => response.json(updated))
     .catch(e => next(e))
 })

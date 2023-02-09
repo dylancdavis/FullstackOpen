@@ -38,7 +38,7 @@ Content-Type: application/json
 ###
 # PUT request
 
-PUT http://localhost:3001/api/persons/
+PUT http://localhost:3001/api/persons/63e522a4dc3c26797f0ca169
 Content-Type: application/json
 
 {
