@@ -51,7 +51,7 @@ app.get('/api/persons', (request, response) => {
 })
 
 // GET person by ID
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
     .then(r => {
       if (r) {
@@ -60,35 +60,25 @@ app.get('/api/persons/:id', (request, response) => {
         response.status(404).end()
       }
     })
-    .catch(e => {
-      console.log(e);
-      if (e.name === 'CastError') response.status(400).json({error: 'Malformed ID'})
-      response.status(500).end()
-    })
-  const id = Number(request.params.id);
+    .catch(e => next(e))
 })
 
 // DELETE person by ID
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(r=> response.status(204).end())
-    .catch(e => console.log(e))
+    .then(r => response.status(204).end())
+    .catch(e => next(e))
 })
 
 // POST new person, automatically generated ID
 app.post('/api/persons', (request, response) => {
 
-  // Check for both properties
-  if (!request.body.name || !request.body.number) {
-    response.status(400).json({error: 'missing object properties'})
-    return
-  }
+  const objName = request.body.name
+  const objNumber = request.body.number
 
-  // Check that person does not already exist
-  // if (persons.map(p => p.name).includes(newObj.name)) {
-  //   response.status(400).json({error: 'person already exists'})
-  //   return
-  // }
+  // Check for both properties
+  if (!objName) return response.status(400).json({error: 'name property missing'})
+  if (!objNumber) return response.status(400).json({error: 'number property missing'})
 
   const p = new Person ({
     name: request.body.name,
@@ -102,11 +92,45 @@ app.post('/api/persons', (request, response) => {
 
 })
 
+app.put('api/persons/:id', (request, response, next) => {
+
+  console.log('put detected');
+
+  const id = request.params.id
+  const objName = request.body.name
+  const objNumber = request.body.number
+
+  // Check for both properties
+  if (!objName) return response.status(400).json({error: 'name property missing'})
+  if (!objNumber) return response.status(400).json({error: 'number property missing'})
+
+  const p = new Person ({
+    name: request.body.name,
+    number: request.body.number
+  })
+
+  Person.findByIdAndUpdate(id, p, {new: true})
+    .then(updated => response.json(updated))
+    .catch(e => next(e))
+})
+
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+  if (error.name === 'CastError') {
+    response.status(400).json({error: 'malformed id'})
+  } else {
+    response.status(500).end()
+  }
+  next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT || 3001;
 

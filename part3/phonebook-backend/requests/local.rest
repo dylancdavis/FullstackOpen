@@ -23,5 +23,25 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "name": "Alan Turing"
+    "name": "Alan Turing",
+}
+
+###
+# Will fail, missing name
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "number": "78-34-4574565"
+}
+
+###
+# PUT request
+
+PUT http://localhost:3001/api/persons/
+Content-Type: application/json
+
+{
+    "name": "Hank Green",
+    "number": "78-34-4574565"
 }
