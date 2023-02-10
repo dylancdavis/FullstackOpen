@@ -66,7 +66,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 // DELETE person by ID
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then(r => response.status(204).end())
+    .then(() => response.status(204).end())
     .catch(e => next(e))
 })
 
@@ -90,7 +90,7 @@ app.post('/api/persons', (request, response, next) => {
       response.status(400).json({error: `person with ${objName} already exists.`})
     } else {
       p.save()
-      .then(resp => {
+      .then(() => {
         console.log(`${p.name} (${p.number}) addded to phonebook`)
         response.status(201).json(p);
      }).catch(e => next(e))

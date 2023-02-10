@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const dotenv = require('dotenv').config()
+require('dotenv').config()
 
 // const url=`mongodb+srv://dylcdav:${password}@phonebook.hjrjhsm.mongodb.net/?retryWrites=true&w=majority`
 const url= process.env.MONGO_URI
@@ -29,7 +29,7 @@ const personSchema = new mongoose.Schema({
             return /^\d+$/.test(v)
           }
         },
-        message: p => 'Incorrect phone number format'
+        message: () => 'Incorrect phone number format'
         }
     }
 })
