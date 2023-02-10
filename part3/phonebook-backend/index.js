@@ -71,7 +71,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
 })
 
 // POST new person, automatically generated ID
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
 
   const objName = request.body.name
   const objNumber = request.body.number
@@ -85,10 +85,11 @@ app.post('/api/persons', (request, response) => {
     number: request.body.number
   })
 
-  p.save().then(r => {
-    console.log(`${p.name} (${p.number}) addded to phonebook`)
-    response.status(201).json(p);
-  })
+  p.save()
+    .then(r => {
+      console.log(`${p.name} (${p.number}) addded to phonebook`)
+      response.status(201).json(p);
+   }).catch(e => next(e))
 
 })
 
@@ -121,6 +122,8 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message);
   if (error.name === 'CastError') {
     response.status(400).json({error: 'malformed id'})
+  } else if (error.name === 'ValidationError') {
+    response.status(400).json({error: error.message})
   } else {
     response.status(500).end()
   }

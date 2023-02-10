@@ -36,6 +36,18 @@ Content-Type: application/json
 }
 
 ###
+# Will fail validation (name too short)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Al",
+    "number": "87-1343-12324"
+}
+
+
+
+###
 # PUT request
 
 PUT http://localhost:3001/api/persons/63e522a4dc3c26797f0ca169

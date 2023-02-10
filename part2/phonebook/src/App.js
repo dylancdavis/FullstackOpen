@@ -64,6 +64,7 @@ const App = () => {
     }
 
     create(newPerson).then(p => {
+      console.log('adding', p);
       setPersons(persons.concat(p))
       setAlertMessage({
         text: `${p.name} added to phonebook.`,
@@ -71,7 +72,14 @@ const App = () => {
       })
       
       setTimeout(() => setAlertMessage(null), 2000)
-    } )
+    }).catch(error => {
+      setAlertMessage({
+        text: `Error: ${error.response.data.error}`,
+        type: 'fail'
+      })
+      
+      setTimeout(() => setAlertMessage(null), 2000)
+    })
     setNewName('')
     setNewNumber('')
   }
@@ -103,7 +111,6 @@ const App = () => {
       />
       <SearchNames searchName={searchName} onSearchChange={handleSearchChange} />
       <Numbers filteredNames={getFilteredNames()} handleRemove={handleRemove} />
-
     </div>
   )
 }
@@ -129,7 +136,7 @@ const PersonForm = ({newName, newNumber, onNameChange, onNumberChange, onSubmit}
 
 const Numbers = ({filteredNames, handleRemove}) =>  (
   <>
-    <h2>Numbers</h2>
+    <h2>Numbers v1</h2>
     {filteredNames.map(p => (
     <div key={p.id}>
         <span>{p.name} {p.number}</span>
