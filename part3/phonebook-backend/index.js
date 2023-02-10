@@ -85,11 +85,19 @@ app.post('/api/persons', (request, response, next) => {
     number: request.body.number
   })
 
-  p.save()
-    .then(r => {
-      console.log(`${p.name} (${p.number}) addded to phonebook`)
-      response.status(201).json(p);
-   }).catch(e => next(e))
+  Person.find({name: objName}).then(r => {
+    if (r.length) {
+      response.status(400).json({error: `person with ${objName} already exists.`})
+    } else {
+      p.save()
+      .then(resp => {
+        console.log(`${p.name} (${p.number}) addded to phonebook`)
+        response.status(201).json(p);
+     }).catch(e => next(e))
+    }
+  })
+
+
 
 })
 
@@ -107,8 +115,11 @@ app.put('/api/persons/:id', (request, response, next) => {
     number: request.body.number
   }
 
-  Person.findByIdAndUpdate(request.params.id, p, {new: true})
-    .then(updated => response.json(updated))
+  Person.findByIdAndUpdate(request.params.id, p, {new: true, runValidators: true})
+    .then(updated => {
+      if (updated) return response.json(updated)
+      return response.status(404).json({error: 'resource to update missing'})
+    } )
     .catch(e => next(e))
 })
 

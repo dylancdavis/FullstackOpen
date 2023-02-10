@@ -11,8 +11,27 @@ const personSchema = new mongoose.Schema({
     name: {
       type: String,
       minLength: 3,
+      required: true,
     },
-    number: String
+    number: {
+      type: String,
+      minLength: 8,
+      required: true,
+      validate: {
+        validator: v => {
+          if (v.includes('-')) {
+            // Case: contains a hyphen
+            const splitByHyphen = v.split('-')
+            if (splitByHyphen.length > 2) return false // test for number of hypens
+            if (splitByHyphen[0].length < 2 || splitByHyphen[0].length > 3 ) return false // test for length of first part
+            return (/^\d+$/.test(splitByHyphen[0]) && /^\d+$/.test(splitByHyphen[1])) // test if number
+          } else {
+            return /^\d+$/.test(v)
+          }
+        },
+        message: p => 'Incorrect phone number format'
+        }
+    }
 })
 
 personSchema.set('toJSON', {

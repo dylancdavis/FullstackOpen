@@ -50,12 +50,22 @@ const App = () => {
             type: 'info'
           })
           setPersons(persons.map(p => p.id === id ? {...newPerson, id: id} : p))
-        }).catch(() => {
-          setPersons(persons.filter(p => p.id !== id))
-          setAlertMessage({
-            text: `Error: ${newName} does not exist on server, deleting.`,
-            type: 'fail'
-          })
+        }).catch(e => {
+          console.log(e.response.status);
+          if (e.response.status === 400) {
+            // Due to bad request
+            setAlertMessage({
+              text: `Error: ${e.response.data.error}`,
+              type: 'fail'
+            })
+          } else if (e.response.status === 404) {
+            console.log(e.response.data.error);
+            setAlertMessage({
+              text: `Error: ${newName} does not exist on server, deleting.`,
+              type: 'fail'
+            })
+            setPersons(persons.filter(p => p.id !== id))
+          }
         })
         setTimeout(() => setAlertMessage(null), 2000)
 
@@ -73,6 +83,7 @@ const App = () => {
       
       setTimeout(() => setAlertMessage(null), 2000)
     }).catch(error => {
+
       setAlertMessage({
         text: `Error: ${error.response.data.error}`,
         type: 'fail'
