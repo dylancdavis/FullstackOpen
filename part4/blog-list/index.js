@@ -1,6 +1,7 @@
 const http = require('http')
 const express = require('express')
 const app = express()
+require('dotenv').config()
 const cors = require('cors')
 const mongoose = require('mongoose')
 
@@ -14,8 +15,7 @@ const blogSchema = new mongoose.Schema({
 const Blog = mongoose.model('Blog', blogSchema)
 
 //const mongoUrl = 'mongodb://localhost/bloglist'
-const password = 'pswd'
-const mongoUrl = `mongodb+srv://dylcdav:${password}@phonebook.hjrjhsm.mongodb.net/?retryWrites=true&w=majority`
+const mongoUrl = process.env.MONGO_URI
 mongoose.connect(mongoUrl)
 
 app.use(cors())
