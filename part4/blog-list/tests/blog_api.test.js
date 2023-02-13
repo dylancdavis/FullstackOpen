@@ -45,6 +45,12 @@ const blogToPost = {
     "likes": 8
 }
 
+const blogNoLikes = {
+    "title": "Drink More Water",
+    "author": "Hydro Man",
+    "url": "water.com"
+}
+
 beforeEach(async () => {
     await Blog.deleteMany({})
     const blogObjs = testBlogs.map(b => new Blog(b))
@@ -98,6 +104,11 @@ describe('POST request to /api/blogs', () => {
                 return false;
             }
         })).toBe(true)
+    })
+
+    test('with no likes property has likes added with value zero', async () => {
+        const response = await api.post('/api/blogs').send(blogNoLikes)
+        expect(response.body.likes).toBe(0)
     })
     
 })
