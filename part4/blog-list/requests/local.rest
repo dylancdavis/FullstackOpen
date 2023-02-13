@@ -1,7 +1,7 @@
 GET http://localhost:3003/api/blogs
 
 ###
-GET http://localhost:3003/api/blogs/3
+GET http://localhost:3003/api/blogs/63eac6b36fa16079050ead9a
 
 ###
 DELETE http://localhost:3003/api/blogs/63e5467c76cbf69434224ac7
@@ -52,10 +52,12 @@ Content-Type: application/json
 ###
 # PUT request
 
-PUT http://localhost:3003/api/blogs/63e522a4dc3c26797f0ca169
+PUT http://localhost:3003/api/blogs/63eac6b66fa16079050ead99
 Content-Type: application/json
 
 {
-    "name": "Hank Green",
-    "number": "78-34-4574565"
+    "title": "Cool Plants",
+    "author": "Mike Greene",
+    "url": "outlook.com",
+    "likes": 8
 }

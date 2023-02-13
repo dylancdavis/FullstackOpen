@@ -46,9 +46,9 @@ const blogToPost = {
 }
 
 const blogNoLikes = {
-    "title": "Drink More Water",
-    "author": "Hydro Man",
-    "url": "water.com"
+    "title": "Cool Plants",
+    "author": "Mike Greene",
+    "url": "outlook.com"
 }
 
 const blogNoTitle = {
@@ -90,17 +90,17 @@ describe('GET request to /api/blogs', () => {
         }
     })
 
-
 })
+
 
 describe('POST request to /api/blogs', () => {
     test('returns 201 created', async () => {
-        const response = await api.post('/api/blogs',blogToPost)
+        const response = await api.post('/api/blogs').send(blogToPost)
         expect(response.status).toBe(201)
     })
 
     test('increases total number by one', async () => {
-        await api.post('/api/blogs', blogToPost)
+        await api.post('/api/blogs').send(blogToPost)
         const response = await api.get('/api/blogs')
         expect(response.body.length).toBe(testBlogs.length+1)
     })
@@ -149,4 +149,19 @@ describe ('DELETE request to /api/blogs' , () => {
     })
 })
 
+describe ('PUT request to /api/blogs' , () => {
+    test('succeeds with valid ID', async () => {
+        // Get ID of first object in database
+        const getResponse = await api.get('/api/blogs')
+        const idToUse = getResponse.body[0].id
+
+        // Update it with a new object
+        const putResponse = await api.put(`/api/blogs/${idToUse}`,blogToPost)
+        expect(putResponse.status).toBe(200)
+
+        console.log();
+
+        // TODO: Make sure object is correct
+    })
+})
 
