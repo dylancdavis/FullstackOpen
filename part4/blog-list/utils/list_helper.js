@@ -28,9 +28,32 @@ const mostBlogs = blogs => {
     return authorBlogNums.reduce((most, current) => most.blogs > current.blogs ? most : current, {blogs: 0})
 }
 
+const mostLikes = blogs => {
+
+    if (blogs.length === 0) return undefined
+
+    let authorLikeNums = []
+
+    for (let i=0; i<blogs.length; i++) {
+        const currentAuthor = blogs[i].author
+        const currentLikes = blogs[i].likes
+
+        if (authorLikeNums.map(a => a.author).includes(currentAuthor)) {
+            // Author already in list
+            authorLikeNums = authorLikeNums.map(a => a.author === currentAuthor ? { ...a, likes: a.likes+currentLikes } : a)
+        } else {
+            // Author not in list
+            authorLikeNums.push({ author: currentAuthor, likes: currentLikes})
+        }
+    }
+
+    return authorLikeNums.reduce((most, current) => most.likes > current.likes ? most : current, {likes: 0})
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }

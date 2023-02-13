@@ -1,4 +1,10 @@
-const { dummy, totalLikes, favoriteBlog, mostBlogs } = require('../utils/list_helper')
+const { 
+    dummy, 
+    totalLikes, 
+    favoriteBlog, 
+    mostBlogs,
+    mostLikes 
+} = require('../utils/list_helper')
 
 describe('Dummy function', () => {
     test('should be 1', () => {
@@ -156,6 +162,54 @@ describe('Author with most blogs', () => {
         ]
         expect(mostBlogs(threeBlogList)).toStrictEqual({ author: threeBlogList[0].author, blogs: 2})
     })
+})
 
+describe('Author with most likes', () => {
+    test('is undefined with empty list', () => {
+        expect(mostLikes([])).toBe(undefined)
+    })
 
+    test('with one blog is that author, with that blogs likes', () => {
+        const oneBlogList = [{
+            _id: '5a422aa71b54a676234d17f8',
+            title: 'Go To Statement Considered Harmful',
+            author: 'Edsger W. Dijkstra',
+            url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+            likes: 5,
+            __v: 0
+        }]
+    
+        expect(mostLikes(oneBlogList)).toStrictEqual({ author: oneBlogList[0].author, likes: oneBlogList[0].likes})
+    })
+
+    test('with multiple blogs is the author with the most total likes', () => {
+        const threeBlogList = [
+            {
+                _id: '5a422aa71b54a676234d17f8',
+                title: 'Go To Statement Considered Harmful',
+                author: 'Edsger W. Dijkstra',
+                url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+                likes: 5,
+                __v: 0
+            },
+            {
+                _id: '5a422aa71b54a676234d17f8',
+                title: 'Go To Statement Considered Harmful',
+                author: 'John Smith',
+                url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+                likes: 7,
+                __v: 0
+            },
+            {
+                _id: '5a422aa71b54a676234d17f8',
+                title: 'Go To Statement Considered Harmful',
+                author: 'Edsger W. Dijkstra',
+                url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+                likes: 3,
+                __v: 0
+            },
+
+        ]
+        expect(mostLikes(threeBlogList)).toStrictEqual({ author: threeBlogList[0].author, likes: 8})
+    })
 })
