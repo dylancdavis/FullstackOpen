@@ -19,5 +19,9 @@
     "jest": "^29.4.2",
     "nodemon": "^2.0.20",
     "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "globalTeardown": "./tests/teardown.js"
   }
 }
