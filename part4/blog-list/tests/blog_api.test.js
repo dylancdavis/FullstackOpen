@@ -135,4 +135,18 @@ describe('POST request to /api/blogs', () => {
     
 })
 
+describe ('DELETE request to /api/blogs' , () => {
+    test('succeeds with valid ID', async () => {
+        // Get ID of first object in database
+        const getResponse = await api.get('/api/blogs')
+        const idToUse = getResponse.body[0].id
+
+        // Delete it
+        const deleteResponse = await api.delete(`/api/blogs/${idToUse}`)
+        expect(deleteResponse.status).toBe(204)
+
+        // TODO: Make sure ID is not in the database after
+    })
+})
+
 
