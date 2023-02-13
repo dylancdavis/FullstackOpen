@@ -12,8 +12,16 @@ blogsRouter.post('/', async (request, response) => {
     objToAdd.likes = 0
   }
   const blog = new Blog(objToAdd)
-  const result = await blog.save()
-  response.status(201).json(result)
+  try {
+    const result = await blog.save()
+    response.status(201).json(result)
+  } catch(err) {
+    console.log(err.name);
+    if (err.name === "ValidationError") {
+      console.log('validation error detected');
+      response.status(400).end()
+    }
+  }
 })
 
 module.exports = blogsRouter

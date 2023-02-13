@@ -51,6 +51,18 @@ const blogNoLikes = {
     "url": "water.com"
 }
 
+const blogNoTitle = {
+    "author": "Mike Greene",
+    "url": "outlook.com",
+    "likes": 8
+}
+
+const blogNoURL = {
+    "title": "Cool Plants",
+    "author": "Mike Greene",
+    "likes": 8
+}
+
 beforeEach(async () => {
     await Blog.deleteMany({})
     const blogObjs = testBlogs.map(b => new Blog(b))
@@ -109,6 +121,16 @@ describe('POST request to /api/blogs', () => {
     test('with no likes property has likes added with value zero', async () => {
         const response = await api.post('/api/blogs').send(blogNoLikes)
         expect(response.body.likes).toBe(0)
+    })
+
+    test('returns 400 bad request when missing title', async () => {
+        const response = await api.post('/api/blogs').send(blogNoTitle)
+        expect (response.status).toBe(400)
+    })
+
+    test('returns 400 bad request when missing URL', async () => {
+        const response = await api.post('/api/blogs').send(blogNoURL)
+        expect (response.status).toBe(400)
     })
     
 })
