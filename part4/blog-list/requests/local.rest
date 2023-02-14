@@ -52,7 +52,7 @@ Content-Type: application/json
 ###
 # PUT request
 
-PUT http://localhost:3003/api/blogs/63eac6b66fa16079050ead99
+PUT http://localhost:3003/api/blogs/63eac6b66fa16079050ead9d
 Content-Type: application/json
 
 {

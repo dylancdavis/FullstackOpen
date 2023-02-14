@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test jest --verbose --runInBand",
-    "dev": "npx nodemon"
+    "dev": "NODE_ENV=development nodemon index.js"
   },
   "author": "Dylan Davis",
   "license": "MIT",
