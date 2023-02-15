@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
+const userExtractor = require('../utils/userExtractor')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
@@ -47,7 +48,7 @@ blogsRouter.post('/', async (request, response) => {
   response.status(201).json(result)
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
+blogsRouter.delete('/:id', userExtractor, async (request, response) => {
 
   // Return error if no token provided
   if (!request.token) return response.status(400).json({error: 'missing token'})
