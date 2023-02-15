@@ -1,4 +1,5 @@
 const blogsRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
@@ -22,33 +23,30 @@ blogsRouter.get('/:id', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  const objToAdd = request.body
+
+  if (!request.token) return response.status(400).json({error: 'missing token or incorrect authorization scheme'})
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) return response.status(401).json({error: 'invalid token'})
+
+  // Find creator and extract blog
+  console.log('decoded id:',decodedToken.id);
+  const creator = await User.findById(decodedToken.id)
+  const blogToAdd = request.body
   
-  // add likes field if it does not exist
-  if (!objToAdd.likes) {
-    objToAdd.likes = 0
-  }
-
-  // Get user to add to blog (any user)
-  const creator = await User.findOne({})
-
-  objToAdd.user = creator
+  // Populate likes and user fields of blog
+  if (!blogToAdd.likes) blogToAdd.likes = 0
+  console.log("creator:",creator);
+  blogToAdd.user = creator._id
   
-  // Save blog to schema
-  const blog = new Blog(objToAdd)
-  try {
-    const result = await blog.save()
+  // Save blog to database
+  const blog = new Blog(blogToAdd)
+  const result = await blog.save()
 
-    // use blogs id to save to creator
-    creator.blogs = creator.blogs.concat(result.id)
-    creator.save()
+  // Save blog ID to creator in database
+  creator.blogs = creator.blogs.concat(result.id)
+  creator.save()
 
-    response.status(201).json(result)
-  } catch(err) {
-    if (err.name === "ValidationError") {
-      response.status(400).json({error: `Validation error: ${err.message}`})
-    }
-  }
+  response.status(201).json(result)
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
