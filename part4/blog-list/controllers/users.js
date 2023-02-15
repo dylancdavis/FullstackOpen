@@ -17,7 +17,9 @@ userRouter.post('/', async (req, res) => {
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)
 
-    const user = new User({username, name, passwordHash})
+    const blogs = []
+
+    const user = new User({username, name, passwordHash, blogs})
 
     const ret = await user.save()
 
@@ -25,8 +27,22 @@ userRouter.post('/', async (req, res) => {
 })
 
 userRouter.get('/', async (req, res) => {
-    const users = await User.find({})
+    const users = await User
+        .find({})
+        .populate('blogs', {title: 1, author: 1, url: 1, likes: 1})
     res.json(users)
 })
+
+userRouter.get('/:id', async (req, res) => {
+    const id = req.params.id
+    const foundUser = await User
+      .findById(id)
+      .populate('blogs', {title: 1, author: 1, url: 1, likes: 1})
+    if (foundUser) {
+      res.json(foundUser)
+    } else {
+      res.status(404).end()
+    }
+  })
 
 module.exports = userRouter

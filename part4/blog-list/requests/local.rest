@@ -1,7 +1,7 @@
-GET http://localhost:3003/api/blogs
+GET http://localhost:3003/api/blogs/
 
 ###
-GET http://localhost:3003/api/blogs/63eac6b36fa16079050ead9a
+GET http://localhost:3003/api/users/
 
 ###
 DELETE http://localhost:3003/api/blogs/63e5467c76cbf69434224ac7
@@ -18,36 +18,6 @@ Content-Type: application/json
     "url": "google.com",
     "likes": 3
 }
-
-###
-# Will fail, missing number
-POST http://localhost:3003/api/blogs
-Content-Type: application/json
-
-{
-    "name": "Alan Turing",
-}
-
-###
-# Will fail, missing name
-POST http://localhost:3003/api/blogs
-Content-Type: application/json
-
-{
-    "number": "78-34-4574565"
-}
-
-###
-# Will fail validation (name too short)
-POST http://localhost:3003/api/blogs
-Content-Type: application/json
-
-{
-    "name": "Al",
-    "number": "87-1343-12324"
-}
-
-
 
 ###
 # PUT request
