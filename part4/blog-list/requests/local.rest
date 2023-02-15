@@ -24,7 +24,7 @@ Content-Type: application/json
 # Should succeed has correct token
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5zbWl0aCIsImlkIjoiNjNlZDJkZTUyOGIwMWMzOWRhMWUwODg3IiwiaWF0IjoxNjc2NDg4MTcwfQ.wgyJeTJuHKpRfWFHObfzXthHOvDerVBH0EgDbZbXcMs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5zbWl0aCIsImlkIjoiNjNlZDQ3ZjU5NmMwMTZhYzRiNzQ3MjQwIiwiaWF0IjoxNjc2NDk1MDI4fQ.7z8W8PFRi6miE88uk3uqpfGQz3lO82LHHVf0p9R_Ew4
 
 {
     "title": "My Day",
@@ -35,8 +35,8 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impva
 
 ###
 # Delete with token
-DELETE http://localhost:3003/api/blogs/63ed2df428b01c39da1e088c
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5zbWl0aCIsImlkIjoiNjNlZDJkZTUyOGIwMWMzOWRhMWUwODg3IiwiaWF0IjoxNjc2NDg4MTcwfQ.wgyJeTJuHKpRfWFHObfzXthHOvDerVBH0EgDbZbXcMs
+DELETE http://localhost:3003/api/blogs/63ed47a01773dac386dcec78
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5zbWl0aCIsImlkIjoiNjNlZDJkZTUyOGIwMWMzOWRhMWUwODg3IiwiaWF0IjoxNjc2NDg4MTcwfQ.wgyJeTJuHKpRfWFHObfzXthHOvDerVBH0EgDbZbXcMs
 
 ###
 # Delete no token
