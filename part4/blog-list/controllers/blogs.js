@@ -61,8 +61,11 @@ blogsRouter.delete('/:id', async (request, response) => {
   if (!blog) return response.status(204).end()
   
   // If found, check permissions by comparing IDs, otherwise 401 unauthorized
-  const correctId = blog.user.id;
-  if (decodedToken.id !== blog.user.id) return response.status(401).json({error: 'unauthorized: not note owner'})
+  if (decodedToken.id !== blog.user.id) {
+    return response
+    .status(401)
+    .json({error: `unauthorized: not note owner. owner is ${blog.user.id}, token says ${decodedToken.id}`})
+  } 
 
   // If allowed, delete and return 204 no content
   await Blog.findByIdAndRemove(blog.id)
