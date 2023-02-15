@@ -1,36 +1,3 @@
-GET http://localhost:3003/api/blogs/
-
-###
-GET http://localhost:3003/api/users/
-
-###
-DELETE http://localhost:3003/api/blogs/63e5467c76cbf69434224ac7
-
-###
-# Fails - no token provided
-POST http://localhost:3003/api/blogs
-Content-Type: application/json
-
-{
-    "title": "My Day",
-    "author": "John Smith",
-    "url": "google.com",
-    "likes": 3
-}
-
-###
-# PUT request
-
-PUT http://localhost:3003/api/blogs/63eac6b66fa16079050ead9d
-Content-Type: application/json
-
-{
-    "title": "Cool Plants",
-    "author": "Mike Greene",
-    "url": "outlook.com",
-    "likes": 8
-}
-
 ###
 POST http://localhost:3003/api/users
 Content-Type: application/json
@@ -40,6 +7,9 @@ Content-Type: application/json
     "name": "John Smith",
     "password": "hunter2"
 }
+
+###
+GET http://localhost:3003/api/users/
 
 ###
 POST http://localhost:3003/api/login
@@ -54,7 +24,7 @@ Content-Type: application/json
 # Should succeed has correct token
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5zbWl0aCIsImlkIjoiNjNlZDJhNTU0NjA2MTllYTQ1NDQyYjRhIiwiaWF0IjoxNjc2NDg3MzY0fQ.PY7MBycjcfrd6q60icEqIrI8ZHqrZr7WOyc6SsB_obw
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5zbWl0aCIsImlkIjoiNjNlZDJkZTUyOGIwMWMzOWRhMWUwODg3IiwiaWF0IjoxNjc2NDg4MTcwfQ.wgyJeTJuHKpRfWFHObfzXthHOvDerVBH0EgDbZbXcMs
 
 {
     "title": "My Day",
@@ -62,3 +32,15 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Impva
     "url": "google.com",
     "likes": 3
 }
+
+###
+# Delete with token
+DELETE http://localhost:3003/api/blogs/63ed2df428b01c39da1e088c
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5zbWl0aCIsImlkIjoiNjNlZDJkZTUyOGIwMWMzOWRhMWUwODg3IiwiaWF0IjoxNjc2NDg4MTcwfQ.wgyJeTJuHKpRfWFHObfzXthHOvDerVBH0EgDbZbXcMs
+
+###
+# Delete no token
+DELETE http://localhost:3003/api/blogs/63ed2df428b01c39da1e088c
+
+###
+GET http://localhost:3003/api/blogs/

@@ -24,18 +24,16 @@ blogsRouter.get('/:id', async (request, response) => {
 
 blogsRouter.post('/', async (request, response) => {
 
-  if (!request.token) return response.status(400).json({error: 'missing token or incorrect authorization scheme'})
+  if (!request.token) return response.status(400).json({error: 'missing token'})
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
   if (!decodedToken.id) return response.status(401).json({error: 'invalid token'})
 
   // Find creator and extract blog
-  console.log('decoded id:',decodedToken.id);
   const creator = await User.findById(decodedToken.id)
   const blogToAdd = request.body
   
   // Populate likes and user fields of blog
   if (!blogToAdd.likes) blogToAdd.likes = 0
-  console.log("creator:",creator);
   blogToAdd.user = creator._id
   
   // Save blog to database
@@ -50,9 +48,25 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  const id = request.params.id
-  await Blog.findByIdAndRemove(id)
-  response.status(204).end()
+
+  // Return error if no token provided
+  if (!request.token) return response.status(400).json({error: 'missing token'})
+  
+  // Decode token and throw erorr for invalid format
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!decodedToken.id) return response.status(401).json({error: 'invalid token'})
+
+  // Search for the blog, send 204 if not found
+  const blog = await Blog.findById(request.params.id).populate('user')
+  if (!blog) return response.status(204).end()
+  
+  // If found, check permissions by comparing IDs, otherwise 401 unauthorized
+  const correctId = blog.user.id;
+  if (decodedToken.id !== blog.user.id) return response.status(401).json({error: 'unauthorized: not note owner'})
+
+  // If allowed, delete and return 204 no content
+  await Blog.findByIdAndRemove(blog.id)
+  return response.status(204).end()
 })
 
 blogsRouter.put('/:id', async (request, response) => {

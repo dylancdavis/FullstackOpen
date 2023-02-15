@@ -1,8 +1,0 @@
-const errorHandler = (e, request, response, next) => {
-    if (err.name === "ValidationError") {
-        return response.status(400).json({error: `Validation error: ${err.message}`})
-      }  
-    return response.status(401).json({error: e})
-}
-
-module.exports = errorHandler
