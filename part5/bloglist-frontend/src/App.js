@@ -4,12 +4,16 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import NewBlogForm from './components/NewBlogForm'
 
+import './app.css'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+
+  const [info, setInfo] = useState(null)
 
   const handleUsernameChange = e => setUsername(e.target.value)
   const handlePasswordChange = e => setPassword(e.target.value)
@@ -29,16 +33,24 @@ const App = () => {
       setUsername('')
       setPassword('')
       console.log('login success', user);
+      infoMessage(`logged in as ${user.name}`)
     } catch (e) {
       console.log(e.name, e.message);
       console.log('error: incorrect login');
+      infoMessage('Incorrect username or password')
     }
+  }
+
+  const infoMessage = (message) => {
+    setInfo(message)
+    setTimeout(() => {setInfo(null)}, 2000)
   }
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedInUser')
     blogService.setToken(null)
     setUser(null)
+    infoMessage('Logged out successfully')
   }
 
   const handleBlogCreate = async (title, author, url) => {
@@ -51,6 +63,7 @@ const App = () => {
     console.log(response);
 
     setBlogs(blogs.concat(response))
+    infoMessage('Created new blog')
   }
 
   useEffect(() => {
@@ -68,6 +81,7 @@ const App = () => {
   return (
     user
     ? (<div>
+        {info && <p className='info-box'>{info}</p> }
         <div>{`(Logged in as ${user.name} `} <button onClick={handleLogout}>logout</button>{`)`}</div>
         <h2>BLOGS</h2>
         
@@ -78,6 +92,7 @@ const App = () => {
 
       </div>)
     : (<div>
+        {info && <p className='info-box'>{info}</p> }
         <h1>login</h1>
         <form onSubmit={handleLogin}>
           <label>
