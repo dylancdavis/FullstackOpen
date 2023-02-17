@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import NewBlogForm from './components/NewBlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -21,7 +22,9 @@ const App = () => {
 
     try {
       const user = await loginService.login({username, password})
-      window.localStorage.setItem('loggedInUser',user)
+      console.log(user);
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user))
+      blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -34,28 +37,45 @@ const App = () => {
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedInUser')
+    blogService.setToken(null)
     setUser(null)
   }
 
+  const handleBlogCreate = async (title, author, url) => {
+    const blogToPost = {
+      title: title,
+      author: author,
+      url: url
+    }
+    const response = await (blogService.create(blogToPost))
+    console.log(response);
 
+    setBlogs(blogs.concat(response))
+  }
 
   useEffect(() => {
     (async () => {
       const newBlogs = await blogService.getAll()
       setBlogs(newBlogs)
     })()
-    const loggedInUser = window.localStorage.getItem('loggedInUser')
-    if (loggedInUser) setUser(loggedInUser)
+    const loggedInUser = JSON.parse(window.localStorage.getItem('loggedInUser'))
+    if (loggedInUser) {
+      setUser(loggedInUser)
+      blogService.setToken(loggedInUser.token)
+    }
   }, [])
 
   return (
     user
     ? (<div>
-        <button onClick={handleLogout}>logout</button>
-        <h2>blogs</h2>
+        <div>{`(Logged in as ${user.name} `} <button onClick={handleLogout}>logout</button>{`)`}</div>
+        <h2>BLOGS</h2>
+        
+        <NewBlogForm handleOnSubmit={handleBlogCreate}/><br></br>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
         )}
+
       </div>)
     : (<div>
         <h1>login</h1>
