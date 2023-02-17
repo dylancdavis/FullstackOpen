@@ -11,11 +11,13 @@ const loginRouter = require('./controllers/login')
 const tokenFromReqest = require('./utils/tokenExtractor')
 const errorHandler = require('./utils/errorHandler.js')
 const userExtractor = require('./utils/userExtractor')
+const morgan = require('morgan')
 
 mongoose.connect(config.MONGO_URI)
 
 app.use(cors())
 app.use(express.json())
+app.use(morgan('tiny'))
 app.use(tokenFromReqest)
 app.use(userExtractor)
 
@@ -24,7 +26,5 @@ app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
 
 app.use(errorHandler)
-
-
 
 module.exports = app
