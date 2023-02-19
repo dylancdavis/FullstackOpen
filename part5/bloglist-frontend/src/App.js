@@ -85,7 +85,10 @@ const App = () => {
         <div>{`(Logged in as ${user.name} `} <button onClick={handleLogout}>logout</button>{`)`}</div>
         <h2>BLOGS</h2>
         
-        <NewBlogForm handleOnSubmit={handleBlogCreate}/><br></br>
+        <Togglable>
+          <NewBlogForm handleOnSubmit={handleBlogCreate}/>
+        </Togglable><br></br>
+
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
         )}
@@ -106,6 +109,23 @@ const App = () => {
           <button type='submit'>login</button>
         </form>
       </div>)
+  )
+}
+
+const Togglable = (props) => {
+
+  const [visibility, setVisibility] = useState(false)
+
+  const toggleVisibility = () => {
+    setVisibility(!visibility)
+  }
+
+  return (
+    <>
+      {!visibility && <button onClick={toggleVisibility}>Add Blog</button>}
+      {visibility && <button onClick={toggleVisibility}>Cancel</button>}
+      {visibility && props.children}
+    </>
   )
 }
 
