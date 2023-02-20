@@ -112,7 +112,7 @@ const App = () => {
           <NewBlogForm handleOnSubmit={handleBlogCreate}/>
         </Togglable>
         <ul>
-          {blogs.map(blog =>
+          {blogs.sort((b1,b2)=>b2.likes-b1.likes).map(blog =>
             (
               <li>
                 <Blog key={blog.id} blog={blog} />
