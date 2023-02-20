@@ -72,31 +72,27 @@ const App = () => {
 		blogFormRef.current.toggleVisibility()
 	}
 
-	const handleBlogLike = blog => {
-		return async () => {
-			const newBlog = { ...blog, likes: blog.likes+1, user: blog.user.id }
-			await blogService.update(blog.id,newBlog)
+	const handleBlogLike = async blog => {
+		const newBlog = { ...blog, likes: blog.likes+1, user: blog.user.id }
+		await blogService.update(blog.id,newBlog)
 
-			setBlogs(blogs.map(b => {
-				if (b.id === blog.id) {
-					return { ...blog, likes: blog.likes+1 }
-				} else {
-					return b
-				}
-			}))
-		}
+		setBlogs(blogs.map(b => {
+			if (b.id === blog.id) {
+				return { ...blog, likes: blog.likes+1 }
+			} else {
+				return b
+			}
+		}))
 	}
 
-	const handleBlogDelete = blog => {
-		return async () => {
-			if (!window.confirm(`Delete blog ${blog.title}?`)) return
+	const handleBlogDelete = async blog => {
+		if (!window.confirm(`Delete blog ${blog.title}?`)) return
 
-			const response = await blogService.remove(blog.id)
-			if (response.status === 204) {
-				setBlogs(blogs.filter(b => b.id !== blog.id))
-			} else {
-				console.log('blog not deleted.', response)
-			}
+		const response = await blogService.remove(blog.id)
+		if (response.status === 204) {
+			setBlogs(blogs.filter(b => b.id !== blog.id))
+		} else {
+			console.log('blog not deleted.', response)
 		}
 	}
 
@@ -123,21 +119,13 @@ const App = () => {
 					<NewBlogForm handleOnSubmit={handleBlogCreate}/>
 				</Togglable>
 				<ul>
-					{blogs.sort((b1,b2) => b2.likes-b1.likes).map(blog =>
-						(
-							<li key={blog.id}>
-								<Blog blog={blog} />
-								<Togglable showText={'show'} hideText={'hide'}>
-									<ul>
-										<li key='likes'>{`-Likes: ${blog.likes}`} <button onClick={handleBlogLike(blog)}>Like</button></li>
-										<li key='url'>{`URL: ${blog.url}`}</li>
-										<li key='from'>{`From: ${blog.user.name}`}</li>
-										<li><button onClick={handleBlogDelete(blog)}>Delete Blog</button></li>
-									</ul>
-								</Togglable>
-							</li>
-						)
-
+					{blogs.sort((b1,b2) => b2.likes-b1.likes).map(b =>
+						(<Blog
+							key={b.id}
+							blog={b}
+							handleBlogLike={handleBlogLike}
+							handleBlogDelete={handleBlogDelete}
+						/>)
 					)}
 				</ul>
 

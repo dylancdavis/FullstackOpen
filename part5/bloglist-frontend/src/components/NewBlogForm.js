@@ -26,15 +26,15 @@ const NewBlogForm = ({ handleOnSubmit }) => {
 			<h2>Create New Blog</h2>
 			<form onSubmit={clearAndSubmit}>
 				<label>Title:
-					<input value={title} onChange={handleTitleChange}></input>
+					<input className="title-input" value={title} onChange={handleTitleChange}></input>
 				</label><br></br>
 				<label>Author:
-					<input value={author} onChange={handleAuthorChange}></input>
+					<input className="author-input" value={author} onChange={handleAuthorChange}></input>
 				</label><br></br>
 				<label>URL:
-					<input value={url} onChange={handleUrlChange}></input>
+					<input className="url-input" value={url} onChange={handleUrlChange}></input>
 				</label><br></br>
-				<button type='submit'>Create Blog</button>
+				<button className='submit-button' type='submit'>Create Blog</button>
 
 			</form>
 		</>
