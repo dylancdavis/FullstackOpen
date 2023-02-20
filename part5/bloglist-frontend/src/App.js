@@ -72,6 +72,23 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
   }
 
+  const handleBlogLike = blog => {
+    return async () => {
+      const newBlog = {...blog, likes: blog.likes+1, user: blog.user.id}
+      await blogService.update(blog.id,newBlog)
+
+      setBlogs(blogs.map(b => {
+        if (b.id === blog.id) {
+          return {...blog, likes: blog.likes+1}
+        } else {
+          return b
+        }
+      }))
+    }
+
+
+  }
+
   useEffect(() => {
     (async () => {
       const newBlogs = await blogService.getAll()
@@ -101,7 +118,7 @@ const App = () => {
                 <Blog key={blog.id} blog={blog} />
                 <Togglable showText={'show'} hideText={'hide'}>
                   <ul>
-                    <li key='likes'>{`-Likes: ${blog.likes}`}</li>
+                    <li key='likes'>{`-Likes: ${blog.likes}`} <button onClick={handleBlogLike(blog)}>Like</button></li>
                     <li key='url'>{`URL: ${blog.url}`}</li>
                     <li key='from'>{`From: ${blog.user.name}`}</li>
                   </ul>
