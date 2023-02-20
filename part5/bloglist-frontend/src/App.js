@@ -85,8 +85,19 @@ const App = () => {
         }
       }))
     }
+  }
 
+  const handleBlogDelete = blog => {
+    return async () => {
+      if (!window.confirm(`Delete blog ${blog.title}?`)) return;
 
+      const response = await blogService.remove(blog.id)
+      if (response.status === 204) {
+        setBlogs(blogs.filter(b => b.id !== blog.id))
+      } else {
+        console.log('blog not deleted.', response);
+      }
+    }
   }
 
   useEffect(() => {
@@ -121,6 +132,7 @@ const App = () => {
                     <li key='likes'>{`-Likes: ${blog.likes}`} <button onClick={handleBlogLike(blog)}>Like</button></li>
                     <li key='url'>{`URL: ${blog.url}`}</li>
                     <li key='from'>{`From: ${blog.user.name}`}</li>
+                    <li><button onClick={handleBlogDelete(blog)}>Delete Blog</button></li>
                   </ul>
                 </Togglable>
               </li>
