@@ -119,7 +119,7 @@ const App = () => {
 				<div>{`(Logged in as ${user.name} `} <button onClick={handleLogout}>logout</button>{')'}</div>
 				<h2>BLOGS</h2>
 
-				<Togglable /* showText={'Add Blog'} */ hideText={'Cancel'} ref={blogFormRef}>
+				<Togglable showText={'Add Blog'} hideText={'Cancel'} ref={blogFormRef}>
 					<NewBlogForm handleOnSubmit={handleBlogCreate}/>
 				</Togglable>
 				<ul>
