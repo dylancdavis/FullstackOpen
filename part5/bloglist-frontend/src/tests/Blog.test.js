@@ -41,12 +41,9 @@ describe('Blog component', () => {
 		const mockLike = jest.fn()
 		const { container } = render(<Blog blog={sampleBlog} handleBlogLike={mockLike} handleBlogDelete={mockDelete} />)
 
-		// Click the button
+		// Click the 'show' button
 		const user = userEvent.setup()
 		const showBtn = container.querySelector('.show-button')
-		console.log('show button',showBtn)
-
-
 		await user.click(showBtn)
 
 		// See if the text exists after buttonclick
