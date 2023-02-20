@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import NewBlogForm from './components/NewBlogForm'
+import Togglable from './components/Togglable'
 
 import './app.css'
 
 const App = () => {
+  
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
@@ -53,6 +55,8 @@ const App = () => {
     infoMessage('Logged out successfully')
   }
 
+  const blogFormRef = useRef()
+
   const handleBlogCreate = async (title, author, url) => {
     const blogToPost = {
       title: title,
@@ -64,6 +68,8 @@ const App = () => {
 
     setBlogs(blogs.concat(response))
     infoMessage('Created new blog')
+
+    blogFormRef.current.toggleVisibility()
   }
 
   useEffect(() => {
@@ -85,13 +91,27 @@ const App = () => {
         <div>{`(Logged in as ${user.name} `} <button onClick={handleLogout}>logout</button>{`)`}</div>
         <h2>BLOGS</h2>
         
-        <Togglable>
+        <Togglable showText={'Add Blog'} hideText={'Cancel'} ref={blogFormRef}>
           <NewBlogForm handleOnSubmit={handleBlogCreate}/>
-        </Togglable><br></br>
+        </Togglable>
+        <ul>
+          {blogs.map(blog =>
+            (
+              <li>
+                <Blog key={blog.id} blog={blog} />
+                <Togglable showText={'show'} hideText={'hide'}>
+                  <ul>
+                    <li key='likes'>{`-Likes: ${blog.likes}`}</li>
+                    <li key='url'>{`URL: ${blog.url}`}</li>
+                    <li key='from'>{`From: ${blog.user.name}`}</li>
+                  </ul>
+                </Togglable>
+              </li>
+            )
 
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
+          )}
+        </ul>
+
 
       </div>)
     : (<div>
@@ -109,23 +129,6 @@ const App = () => {
           <button type='submit'>login</button>
         </form>
       </div>)
-  )
-}
-
-const Togglable = (props) => {
-
-  const [visibility, setVisibility] = useState(false)
-
-  const toggleVisibility = () => {
-    setVisibility(!visibility)
-  }
-
-  return (
-    <>
-      {!visibility && <button onClick={toggleVisibility}>Add Blog</button>}
-      {visibility && <button onClick={toggleVisibility}>Cancel</button>}
-      {visibility && props.children}
-    </>
   )
 }
 

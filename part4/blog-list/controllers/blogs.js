@@ -39,7 +39,7 @@ blogsRouter.post('/', async (request, response) => {
   
   // Save blog to database
   const blog = new Blog(blogToAdd)
-  const result = await blog.save()
+  const result = await (await blog.save()).populate('user')
 
   // Save blog ID to creator in database
   creator.blogs = creator.blogs.concat(result.id)
