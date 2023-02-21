@@ -48,6 +48,11 @@ describe('Blog list app', function() {
 			cy.contains('John Smith')
 		})
 
+		it ('user can logout', function () {
+			cy.get('.logout-button').click()
+			cy.contains('login')
+		})
+
 		it('user can create new blogs', function() {
 			cy.get('.show-button').click()
 			cy.get('.title-input').type('My Blog Title')
@@ -98,8 +103,28 @@ describe('Blog list app', function() {
 					cy.get('.like-button').click()
 					cy.get('.hidden-list').contains('Likes: 1')
 				})
+
+				it('that blog can be deleted', function() {
+					cy.get('.delete-button').click()
+					cy.get('.blog').should('not.exist')
+				})
 			})
 
+			describe('and a different user logs in', function () {
+				beforeEach( function() {
+					cy.request('POST', `${Cypress.env('BACKEND')}/users`, { name: 'Jane Doe', username : 'janedoe', password: 'hunter2' })
+					cy.get('.logout-button').click()
+					cy.get('.input-username').type('janedoe')
+					cy.get('.input-password').type('hunter2')
+					cy.get('.submit-button').click()
+				})
+
+				it('this user cannot delete it', function () {
+					cy.get('.blog > .show-button').click()
+					cy.get('.delete-button').should('not.exist')
+					cy.wait(1000)
+				})
+			})
 		})
 	})
 })

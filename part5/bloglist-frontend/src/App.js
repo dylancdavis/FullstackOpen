@@ -110,9 +110,10 @@ const App = () => {
 
 	return (
 		user
+			// Blogs Area
 			? (<div>
 				{info && <p className='info-box'>{info}</p> }
-				<div>{`(Logged in as ${user.name} `} <button onClick={handleLogout}>logout</button>{')'}</div>
+				<div>{`(Logged in as ${user.name} `} <button className='logout-button' onClick={handleLogout}>logout</button>{')'}</div>
 				<h2>BLOGS</h2>
 
 				<Togglable showText={'Add Blog'} hideText={'Cancel'} ref={blogFormRef}>
@@ -131,6 +132,7 @@ const App = () => {
 
 
 			</div>)
+			// Login Form
 			: (<div>
 				{info && <p className='info-box'>{info}</p> }
 				<h1>login</h1>
