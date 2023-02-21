@@ -68,8 +68,18 @@ describe('Blog list app', function() {
 			})
 
 			// it('extra information is initially hidden', function () {
+			// 	cy.visit('')
 			// 	cy.get('.hidden-list').should('not.exist')
 			// })
+
+			it('show button exists', function () {
+				cy.contains('show')
+			})
+
+			it('extra information is initially hidden', function () {
+				cy.get('.hidden-list').should('not.exist')
+				cy.wait(1000)
+			})
 
 			it('extra information is shown after click', function () {
 				cy.get('.blog > .show-button').click()
