@@ -35,10 +35,6 @@ const NewBlogForm = ({ handleOnSubmit }) => {
 					<input className="url-input" value={url} onChange={handleUrlChange}></input>
 				</label><br></br>
 				<button className='submit-button' type='submit'>Create Blog</button>
-<<<<<<< HEAD
-
-=======
->>>>>>> 73eb8f3 (Exercises 5.13-5.16)
 			</form>
 		</>
 	)
