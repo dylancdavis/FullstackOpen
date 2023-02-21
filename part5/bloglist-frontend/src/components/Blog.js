@@ -9,7 +9,7 @@ const Blog = ({ blog, handleBlogLike, handleBlogDelete }) => {
 	return (
 		<li key={blog.id} className='blog'>{blog.title} {blog.author}
 			<Togglable showText={'show'} hideText={'hide'}>
-				<ul className="hiddenList">
+				<ul className="hidden-list">
 					<li key='likes'>{`-Likes: ${blog.likes}`} <button className='like-button' onClick={onLike}>Like</button></li>
 					<li key='url'>{`URL: ${blog.url}`}</li>
 					<li key='from'>{`From: ${blog.user.name}`}</li>

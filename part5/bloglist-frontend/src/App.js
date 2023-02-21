@@ -137,13 +137,13 @@ const App = () => {
 				<form onSubmit={handleLogin}>
 					<label>
 						username
-						<input value={username} onChange={handleUsernameChange} />
+						<input className="input-username" value={username} onChange={handleUsernameChange} />
 					</label><br></br>
 					<label>
 						password
-						<input value={password} onChange={handlePasswordChange} />
+						<input className="input-password" value={password} onChange={handlePasswordChange} />
 					</label><br></br>
-					<button type='submit'>login</button>
+					<button className="submit-button" type='submit'>login</button>
 				</form>
 			</div>)
 	)
