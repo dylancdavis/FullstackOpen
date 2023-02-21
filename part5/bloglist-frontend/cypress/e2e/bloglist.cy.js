@@ -67,11 +67,6 @@ describe('Blog list app', function() {
 				cy.get('.submit-button').click()
 			})
 
-			// it('extra information is initially hidden', function () {
-			// 	cy.visit('')
-			// 	cy.get('.hidden-list').should('not.exist')
-			// })
-
 			it('show button exists', function () {
 				cy.contains('show')
 			})
@@ -84,6 +79,25 @@ describe('Blog list app', function() {
 			it('extra information is shown after click', function () {
 				cy.get('.blog > .show-button').click()
 				cy.get('.hidden-list')
+			})
+
+			describe('and that blog has details shown', function () {
+				beforeEach( function () {
+					cy.get('.blog > .show-button').click()
+				})
+
+				it('shows the hidden list', function () {
+					cy.get('.hidden-list')
+				})
+
+				it('likes are visible with correct amount', function () {
+					cy.get('.hidden-list').contains('Likes: 0')
+				})
+
+				it('user can add a like', function () {
+					cy.get('.like-button').click()
+					cy.get('.hidden-list').contains('Likes: 1')
+				})
 			})
 
 		})
