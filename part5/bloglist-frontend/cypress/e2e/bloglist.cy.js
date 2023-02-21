@@ -126,5 +126,40 @@ describe('Blog list app', function() {
 				})
 			})
 		})
+
+		describe('and user creates and likes multiple blogs', function () {
+			beforeEach( function () {
+				// Create first blog
+				cy.get('.show-button').click()
+				cy.get('.title-input').type('Two Likes Blog')
+				cy.get('.author-input').type('John Smith')
+				cy.get('.url-input').type('www.url.com')
+				cy.get('.submit-button').click()
+
+				// Like first blog twice
+				cy.get('.blog > .show-button').click()
+				cy.get('.like-button').click()
+				cy.get('.like-button').click()
+
+				// Create second blog
+				cy.get('.show-button').click()
+				cy.get('.title-input').type('Three Likes Blog')
+				cy.get('.author-input').type('John Smith')
+				cy.get('.url-input').type('www.url.com')
+				cy.get('.submit-button').click()
+
+				// Like second blog thrice
+				cy.contains('li', 'Three').find('.show-button').click()
+				cy.contains('li', 'Three').find('.like-button').click()
+				cy.contains('li', 'Three').find('.like-button').click()
+				cy.wait(1000)
+				cy.contains('li', 'Three').find('.like-button').click()
+			})
+
+			it('the most liked blog is first', function () {
+				cy.get('.blog').eq(0).should('contain','Three Likes Blog')
+				cy.get('.blog').eq(1).should('contain','Two Likes Blog')
+			})
+		})
 	})
 })
