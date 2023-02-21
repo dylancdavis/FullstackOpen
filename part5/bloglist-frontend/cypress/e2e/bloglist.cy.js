@@ -1,6 +1,16 @@
-describe('Blog list app', () => {
-	it('can visit front page', () => {
-		cy.visit('https://localhost:3000')
-		cy.contains('blogs')
+describe('Blog list app', function() {
+	it('can visit front page', function() {
+		cy.visit('http://localhost:3000')
+	})
+})
+
+describe('Blog list app', function() {
+	beforeEach( function() {
+		cy.request('POST', '/testing/reset')
+		cy.visit('http://localhostL:3000')
+	})
+
+	it('shows the login form', function() {
+		cy.contains('login')
 	})
 })
