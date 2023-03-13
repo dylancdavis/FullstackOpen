@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { voteOnAnecdote, addAnecdote, initializeAnecdotes } from './reducers/anecdoteReducer'
+import { voteOnAnecdote, addAnecdote, initializeAnecdotes, createAnecdote } from './reducers/anecdoteReducer'
 import { setSearch } from './reducers/searchReducer'
 import { clearNotification, setNotification } from './reducers/notificationReducer'
 import AnecdoteForm from './components/AnecdoteForm'
@@ -34,11 +34,9 @@ const App = () => {
     e.preventDefault()
     const text = e.target.anecdoteText.value
     e.target.anecdoteText.value = ''
-    noteService.create(text).then(a => {
-      dispatch(addAnecdote(a))
-      dispatch(setNotification(`Created note '${a.content}'`))
-      setTimeout(() => dispatch(clearNotification()), 5000)
-    })
+    dispatch(createAnecdote(text))
+    dispatch(setNotification(`Created note '${text}'`))
+    setTimeout(() => dispatch(clearNotification()), 5000)
   }
 
   const onSearch = e => {

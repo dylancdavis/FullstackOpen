@@ -30,3 +30,11 @@ export const initializeAnecdotes = () => {
     dispatch(setAnecdotes(anecdotes))
   }
 }
+
+export const createAnecdote = text => {
+  return async (dispatch, getState) => {
+    const response = await anecdoteService.create(text)
+    dispatch(addAnecdote(response))
+    
+  }
+}
