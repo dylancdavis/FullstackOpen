@@ -1,6 +1,6 @@
 const Filter = ({ onSearch }) => (
 	<div>
-		<label for="search-input">search: </label>
+		<label htmlFor="search-input">search: </label>
 		<input id="search-input" onChange={onSearch}></input>
 	</div>
 )

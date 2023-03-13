@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit"
+
 const anecdotesText = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -17,52 +19,24 @@ const toAnecdoteObj = (anecdote) => {
   }
 }
 
-const initialState = anecdotesText.map(toAnecdoteObj)
+const initialAnecdotes = anecdotesText.map(toAnecdoteObj)
 
-export const anecdoteReducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
-
-  switch (action.type) {
-    case 'VOTE':
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState: initialAnecdotes,
+  reducers: {
+    voteOnAnecdote(state, action) {
       return state.map(a => {
-        return a.id === action.payload.id
+        return a.id === action.payload
           ? {...a, votes: a.votes+1}
           : a
       })
-    case 'ADD_ANECDOTE':
-      return state.concat(action.payload)
-    default:
-      return state
+    },
+    addAnecdote(state, action) {
+      return state.concat(toAnecdoteObj(action.payload))
+    }
   }
-}
+})
 
-export const searchReducer = (state = '', action) => {
-  switch (action.type) {
-    case 'SET_SEARCH':
-      return action.payload
-    default:
-      return state
-  }
-}
-
-export const voteOnAnecdote = id => {
-  return {
-    type: 'VOTE',
-    payload: { id }
-  }
-}
-
-export const addAnecdote = text => {
-  return {
-    type: 'ADD_ANECDOTE',
-    payload: toAnecdoteObj(text)
-  }
-}
-
-export const setSearch = text => {
-  return {
-    type: 'SET_SEARCH',
-    payload: text
-  }
-}
+export default anecdoteSlice.reducer
+export const { voteOnAnecdote, addAnecdote } = anecdoteSlice.actions
