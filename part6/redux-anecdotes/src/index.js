@@ -5,11 +5,13 @@ import App from './App'
 import anecdoteReducer from './reducers/anecdoteReducer'
 import searchReducer from './reducers/searchReducer'
 import { configureStore } from '@reduxjs/toolkit'
+import notificationReducer from './reducers/notificationReducer'
 
 const store = configureStore({
 	reducer: {
 		anecdotes: anecdoteReducer,
-		search: searchReducer
+		search: searchReducer,
+		notification: notificationReducer
 	}
 })
 
