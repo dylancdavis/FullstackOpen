@@ -1,4 +1,4 @@
-const anecdotesAtStart = [
+const anecdotesText = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
   'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
@@ -9,7 +9,7 @@ const anecdotesAtStart = [
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
-const asObject = (anecdote) => {
+const toAnecdoteObj = (anecdote) => {
   return {
     content: anecdote,
     id: getId(),
@@ -17,9 +17,9 @@ const asObject = (anecdote) => {
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
+const initialState = anecdotesText.map(toAnecdoteObj)
 
-const reducer = (state = initialState, action) => {
+export const anecdoteReducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
@@ -37,6 +37,15 @@ const reducer = (state = initialState, action) => {
   }
 }
 
+export const searchReducer = (state = '', action) => {
+  switch (action.type) {
+    case 'SET_SEARCH':
+      return action.payload
+    default:
+      return state
+  }
+}
+
 export const voteOnAnecdote = id => {
   return {
     type: 'VOTE',
@@ -47,8 +56,13 @@ export const voteOnAnecdote = id => {
 export const addAnecdote = text => {
   return {
     type: 'ADD_ANECDOTE',
-    payload: asObject(text)
+    payload: toAnecdoteObj(text)
   }
 }
 
-export default reducer
+export const setSearch = text => {
+  return {
+    type: 'SET_SEARCH',
+    payload: text
+  }
+}
