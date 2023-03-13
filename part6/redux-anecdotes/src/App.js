@@ -1,13 +1,12 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { voteOnAnecdote, addAnecdote, initializeAnecdotes, createAnecdote } from './reducers/anecdoteReducer'
+import { voteOnAnecdote, initializeAnecdotes, createAnecdote } from './reducers/anecdoteReducer'
 import { setSearch } from './reducers/searchReducer'
-import { clearNotification, setNotification } from './reducers/notificationReducer'
+import { clearNotification, doNotification, setNotification } from './reducers/notificationReducer'
 import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
 import Filter from './components/Filter'
 import Notification from './components/Notification'
 import { useEffect } from 'react'
-import noteService from './services/anecdoteService'
 
 const App = () => {
 
@@ -25,8 +24,7 @@ const App = () => {
   const onVote = id => {
     dispatch(voteOnAnecdote(id))
     const text = anecdotes.find(a=> a.id === id).content
-    dispatch(setNotification(`You voted for '${text}'`))
-    setTimeout(() => dispatch(clearNotification()), 5000)
+    dispatch(doNotification(`You voted for '${text}'`, 2))
     console.log('vote', id)
   }
 
@@ -35,8 +33,7 @@ const App = () => {
     const text = e.target.anecdoteText.value
     e.target.anecdoteText.value = ''
     dispatch(createAnecdote(text))
-    dispatch(setNotification(`Created note '${text}'`))
-    setTimeout(() => dispatch(clearNotification()), 5000)
+    dispatch(doNotification(`Created note '${text}'`))
   }
 
   const onSearch = e => {
