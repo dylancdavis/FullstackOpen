@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { voteOnAnecdote, addAnecdote, setAnecdotes } from './reducers/anecdoteReducer'
+import { voteOnAnecdote, addAnecdote, initializeAnecdotes } from './reducers/anecdoteReducer'
 import { setSearch } from './reducers/searchReducer'
 import { clearNotification, setNotification } from './reducers/notificationReducer'
 import AnecdoteForm from './components/AnecdoteForm'
@@ -19,7 +19,7 @@ const App = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    noteService.getAll().then(a => dispatch(setAnecdotes(a)) )
+    dispatch(initializeAnecdotes())
   }, [dispatch])
 
   const onVote = id => {

@@ -13,5 +13,5 @@ const create = async (text) => {
 	return response.data
 }
 
-const noteService = { getAll, create }
-export default noteService
+const anecdoteService = { getAll, create }
+export default anecdoteService
