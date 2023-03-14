@@ -1,29 +1,51 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
-import { useQuery } from 'react-query'
+import { useQuery, useMutation, useQueryClient } from 'react-query'
 import axios from 'axios'
 
 const App = () => {
 
+  const baseUrl = 'http://localhost:3001/anecdotes'
+  const queryClient = useQueryClient()
+
   const handleVote = (anecdote) => {
-    console.log('vote')
+    voteAnecdote(anecdote)
   }
 
   const { isLoading, error, data } = useQuery('anecdotes',
-    () => axios.get('http://localhost:3001/anecdotes').then(res => res.data)
+    () => axios.get(baseUrl).then(res => res.data)
+  )
+  
+  const anecdotes = data
+  
+  const newAnecdoteMutation = useMutation(
+    (newAnecdote) => axios.post(baseUrl, newAnecdote).then(res => res.data),
+    { onSuccess: () => { queryClient.invalidateQueries('anecdotes') } }
   )
 
-  const anecdotes = data
+  const voteAnecdoteMutation = useMutation(
+    (newAnecdote) => axios.put(`${baseUrl}/${newAnecdote.id}`, newAnecdote).then(res => res.data),
+    { onSuccess: () => { queryClient.invalidateQueries('anecdotes') } }
+  )
+
+  const addAnecdote = content => {
+    newAnecdoteMutation.mutate({content, votes: 0 })
+  }
+
+  const voteAnecdote = anecdote => {
+    voteAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes+1 })
+  }
   
   if (isLoading) return <div>loading...</div>
   if (error) return <div>Anecdote Service Unavailable (Server Error)</div>
+
 
   return (
     <div>
       <h3>Anecdote app</h3>
     
       <Notification />
-      <AnecdoteForm />
+      <AnecdoteForm addAnecdote={addAnecdote} />
     
       {anecdotes.map(anecdote =>
         <div key={anecdote.id}>
