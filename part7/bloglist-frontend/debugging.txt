@@ -1,0 +1,7 @@
+Things to note:
+- The test only causes issues when a test runs after it
+- The test causes no issues when named to a random, nonexistent class
+- The test causes issues when giving a possible class, like 'like-button' and 'hidden-list'
+- The test "properly" fails when searching an existent, but not visible class
+
+Note that the class does exist in the DOM, it's just not visible.
