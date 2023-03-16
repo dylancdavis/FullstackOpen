@@ -35,7 +35,7 @@ Content-Type: application/json
 # Should succeed has correct token
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5zbWl0aCIsImlkIjoiNjNlZjkzNzFlMzEyMDc2NmE4MjAyOGM3IiwiaWF0IjoxNjc2NjQ1MjM5fQ.7AFnrYWkpPm1PJAhVw7ovjMZAcjSz8HpFHXPVBTDSPs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5zbWl0aCIsImlkIjoiNjNmNTQxYmIwM2RiY2E2ZTEzMzFkNTkwIiwiaWF0IjoxNjc5MDAxNzAwfQ.HoPibjA2AXCIUsyPF77VKIwz8zZPw9XR69k2GPNccZY
 
 {
     "title": "My Day",
@@ -55,3 +55,14 @@ DELETE http://localhost:3003/api/blogs/63ed49b71fa24e3bc873ea76
 
 ###
 GET http://localhost:3003/api/blogs/
+
+###
+GET http://localhost:3003/api/blogs/6413449d1aa6536ab7de4bb2
+
+###
+POST http://localhost:3000/api/blogs/64138870ef756d62fb2e7c92/comments
+Content-Type: application/json
+
+{
+  "text": "This is a new comment"
+}

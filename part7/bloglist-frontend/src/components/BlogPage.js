@@ -1,6 +1,27 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { commentOn } from "../reducers/blogsReducer";
+import blogService from "../services/blogs";
+
 const BlogPage = ({ blog, handleLike }) => {
+  const dispatch = useDispatch();
+
   const onLike = () => {
     handleLike(blog);
+  };
+
+  const [comment, setComment] = useState("");
+
+  const handleCommentChange = (e) => {
+    setComment(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!comment) return;
+    blogService.comment(blog.id, comment);
+    dispatch(commentOn({ id: blog.id, comment }));
+    setComment("");
   };
 
   if (!blog) return null;
@@ -14,16 +35,28 @@ const BlogPage = ({ blog, handleLike }) => {
         Likes: {blog.likes} <button onClick={onLike}>Like</button>
       </p>
       <p>Added by {blog.user.name} </p>
+      <h3>Comments:</h3>
+      <form>
+        <label htmlFor="blog-comment">Comment: </label>
+        <input
+          id="blog-comment"
+          placeholder="add a comment..."
+          value={comment}
+          onChange={handleCommentChange}
+        />
+        <button onClick={handleSubmit}>add</button>
+      </form>
       {blog.comments.length ? (
         <>
-          <h3>Comments:</h3>
           <ul>
             {blog.comments.map((c) => (
               <li key={c}>{c}</li>
             ))}
           </ul>
         </>
-      ) : null}
+      ) : (
+        <i>no comments yet...</i>
+      )}
     </div>
   );
 };
