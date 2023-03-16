@@ -13,6 +13,7 @@ import {
 import "./app.css";
 import { addBlog, deleteBlog, likeBlog } from "./reducers/blogsReducer";
 import { clearUser, setUser } from "./reducers/userReducer";
+import userService from "./services/users";
 
 const App = () => {
   const blogs = useSelector((state) => state.blogs);
@@ -20,6 +21,12 @@ const App = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    userService.getAll().then((u) => setUsers(u));
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -130,6 +137,22 @@ const App = () => {
             />
           ))}
       </ul>
+
+      <div className="users">
+        <h2>USERS</h2>
+        <ul>
+          {users.map((u) => {
+            console.log(u);
+
+            return (
+              <li key={u.id}>
+                {u.name}: {u.blogs.length}{" "}
+                {u.blogs.length === 1 ? "blog" : "blogs"}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   ) : (
     // Login Form
