@@ -19,7 +19,7 @@ import { Routes, Route, Link, useMatch } from "react-router-dom";
 import User from "./components/User";
 import BlogPage from "./components/BlogPage";
 
-import { Button } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 
 const App = () => {
   const blogs = useSelector((state) => state.blogs);
@@ -127,7 +127,9 @@ const App = () => {
   return user ? (
     // Blogs Area
     <div className="container">
-      {notification && <p className="notification-box">{notification}</p>}
+      {notification && (
+        <Alert className="notification-box">{notification}</Alert>
+      )}
       <div>
         <Link to="/">blogs</Link>
         <Link to="/users">users</Link>
@@ -196,7 +198,7 @@ const App = () => {
     </div>
   ) : (
     // Login Form
-    <div>
+    <div className="container">
       {notification && <p className="notification-box">{notification}</p>}
       <h1>login</h1>
       <form onSubmit={handleLogin}>
