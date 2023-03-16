@@ -160,7 +160,6 @@ const App = () => {
                     <Blog
                       key={b.id}
                       blog={b}
-                      handleBlogLike={handleBlogLike}
                       handleBlogDelete={handleBlogDelete}
                     />
                   ))}
