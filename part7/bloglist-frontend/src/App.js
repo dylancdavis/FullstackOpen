@@ -4,6 +4,11 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import NewBlogForm from "./components/NewBlogForm";
 import Togglable from "./components/Togglable";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setNotification,
+  clearNotification,
+} from "./reducers/notificationReducer";
 
 import "./app.css";
 
@@ -14,7 +19,17 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [info, setInfo] = useState(null);
+  const dispatch = useDispatch();
+
+  const notification = useSelector((state) => state.notification);
+
+  const notificationMessage = (message) => {
+    dispatch(setNotification(message));
+
+    setTimeout(() => {
+      dispatch(clearNotification());
+    }, 2000);
+  };
 
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
@@ -34,26 +49,19 @@ const App = () => {
       setUsername("");
       setPassword("");
       console.log("login success", user);
-      infoMessage(`logged in as ${user.name}`);
+      notificationMessage(`logged in as ${user.name}`);
     } catch (e) {
       console.log(e.name, e.message);
       console.log("error: incorrect login");
-      infoMessage("Incorrect username or password");
+      notificationMessage("Incorrect username or password");
     }
-  };
-
-  const infoMessage = (message) => {
-    setInfo(message);
-    setTimeout(() => {
-      setInfo(null);
-    }, 2000);
   };
 
   const handleLogout = () => {
     window.localStorage.removeItem("loggedInUser");
     blogService.setToken(null);
     setUser(null);
-    infoMessage("Logged out successfully");
+    notificationMessage("Logged out successfully");
   };
 
   const blogFormRef = useRef();
@@ -68,7 +76,7 @@ const App = () => {
     console.log(response);
 
     setBlogs(blogs.concat(response));
-    infoMessage("Created new blog");
+    notificationMessage("Created new blog");
 
     blogFormRef.current.toggleVisibility();
   };
@@ -116,9 +124,9 @@ const App = () => {
   return user ? (
     // Blogs Area
     <div>
-      {info && <p className="info-box">{info}</p>}
+      {notification && <p className="notification-box">{notification}</p>}
       <div>
-        {`(Logged in as ${user.name} `}{" "}
+        {`(Logged in as ${user.name} `}
         <button className="logout-button" onClick={handleLogout}>
           logout
         </button>
@@ -145,7 +153,7 @@ const App = () => {
   ) : (
     // Login Form
     <div>
-      {info && <p className="info-box">{info}</p>}
+      {notification && <p className="notification-box">{notification}</p>}
       <h1>login</h1>
       <form onSubmit={handleLogin}>
         <label>
