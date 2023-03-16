@@ -19,6 +19,8 @@ import { Routes, Route, Link, useMatch } from "react-router-dom";
 import User from "./components/User";
 import BlogPage from "./components/BlogPage";
 
+import { Button } from "react-bootstrap";
+
 const App = () => {
   const blogs = useSelector((state) => state.blogs);
   const user = useSelector((state) => state.user);
@@ -122,25 +124,18 @@ const App = () => {
     ? blogs.find((b) => b.id === blogMatch.params.id)
     : null;
 
-  const headerStyle = {
-    display: "flex",
-    padding: "16px",
-    gap: "8px",
-    border: "1px solid black",
-  };
-
   return user ? (
     // Blogs Area
-    <div>
+    <div className="container">
       {notification && <p className="notification-box">{notification}</p>}
-      <div className="header" style={headerStyle}>
+      <div>
         <Link to="/">blogs</Link>
         <Link to="/users">users</Link>
         <div>
           {`(Logged in as ${user.name} `}
-          <button className="logout-button" onClick={handleLogout}>
+          <Button className="logout-button" onClick={handleLogout}>
             logout
-          </button>
+          </Button>
           {")"}
         </div>
       </div>
@@ -224,9 +219,9 @@ const App = () => {
           />
         </label>
         <br></br>
-        <button className="submit-button" type="submit">
+        <Button className="submit-button" type="submit">
           login
-        </button>
+        </Button>
       </form>
     </div>
   );
