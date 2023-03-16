@@ -120,6 +120,7 @@ const App = () => {
       </Togglable>
       <ul>
         {blogs
+          .slice()
           .sort((b1, b2) => b2.likes - b1.likes)
           .map((b) => (
             <Blog
