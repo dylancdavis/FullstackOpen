@@ -1,4 +1,5 @@
 import axios from "axios";
+
 const baseUrl = "/api/blogs";
 
 let token = null;
@@ -17,7 +18,6 @@ const create = async (blog) => {
 
 const update = async (id, newBlog) => {
   const response = await axios.put(`${baseUrl}/${id}`, newBlog);
-  console.log(response);
   return response.data;
 };
 

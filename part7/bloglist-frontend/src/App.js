@@ -11,9 +11,10 @@ import {
 } from "./reducers/notificationReducer";
 
 import "./app.css";
+import { addBlog, deleteBlog, likeBlog } from "./reducers/blogsReducer";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const blogs = useSelector((state) => state.blogs);
   const [user, setUser] = useState(null);
 
   const [username, setUsername] = useState("");
@@ -72,46 +73,26 @@ const App = () => {
       author: author,
       url: url,
     };
-    const response = await blogService.create(blogToPost);
-    console.log(response);
+    const createdBlog = await blogService.create(blogToPost);
+    dispatch(addBlog(createdBlog));
 
-    setBlogs(blogs.concat(response));
     notificationMessage("Created new blog");
-
     blogFormRef.current.toggleVisibility();
   };
 
   const handleBlogLike = async (blog) => {
     const newBlog = { ...blog, likes: blog.likes + 1, user: blog.user.id };
     await blogService.update(blog.id, newBlog);
-
-    setBlogs(
-      blogs.map((b) => {
-        if (b.id === blog.id) {
-          return { ...blog, likes: blog.likes + 1 };
-        } else {
-          return b;
-        }
-      })
-    );
+    dispatch(likeBlog(blog.id));
   };
 
   const handleBlogDelete = async (blog) => {
     if (!window.confirm(`Delete blog ${blog.title}?`)) return;
-
-    const response = await blogService.remove(blog.id);
-    if (response.status === 204) {
-      setBlogs(blogs.filter((b) => b.id !== blog.id));
-    } else {
-      console.log("blog not deleted.", response);
-    }
+    await blogService.remove(blog.id);
+    dispatch(deleteBlog(blog.id));
   };
 
   useEffect(() => {
-    (async () => {
-      const newBlogs = await blogService.getAll();
-      setBlogs(newBlogs);
-    })();
     const loggedInUser = JSON.parse(
       window.localStorage.getItem("loggedInUser")
     );
