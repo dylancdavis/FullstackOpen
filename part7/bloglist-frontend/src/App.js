@@ -122,16 +122,27 @@ const App = () => {
     ? blogs.find((b) => b.id === blogMatch.params.id)
     : null;
 
+  const headerStyle = {
+    display: "flex",
+    padding: "16px",
+    gap: "8px",
+    border: "1px solid black",
+  };
+
   return user ? (
     // Blogs Area
     <div>
       {notification && <p className="notification-box">{notification}</p>}
-      <div>
-        {`(Logged in as ${user.name} `}
-        <button className="logout-button" onClick={handleLogout}>
-          logout
-        </button>
-        {")"}
+      <div className="header" style={headerStyle}>
+        <Link to="/">blogs</Link>
+        <Link to="/users">users</Link>
+        <div>
+          {`(Logged in as ${user.name} `}
+          <button className="logout-button" onClick={handleLogout}>
+            logout
+          </button>
+          {")"}
+        </div>
       </div>
       <Routes>
         <Route

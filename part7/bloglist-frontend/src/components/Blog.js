@@ -9,10 +9,16 @@ const Blog = ({ blog, handleBlogLike, handleBlogDelete }) => {
     handleBlogDelete(blog);
   };
 
+  const style = {
+    padding: "15px",
+    border: "1px solid black",
+    listStyleType: "none",
+  };
+
   const username = JSON.parse(localStorage.getItem("loggedInUser")).username;
 
   return (
-    <li key={blog.id} className="blog">
+    <li style={style} key={blog.id} className="blog">
       <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> {blog.author}
       <Togglable showText={"show"} hideText={"hide"}>
         <ul className="hidden-list">
