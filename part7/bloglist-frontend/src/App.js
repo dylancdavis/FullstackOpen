@@ -17,6 +17,7 @@ import userService from "./services/users";
 
 import { Routes, Route, Link, useMatch } from "react-router-dom";
 import User from "./components/User";
+import BlogPage from "./components/BlogPage";
 
 const App = () => {
   const blogs = useSelector((state) => state.blogs);
@@ -111,8 +112,15 @@ const App = () => {
     }
   }, []);
 
-  const match = useMatch("/users/:id");
-  const routedUser = match ? users.find((u) => u.id === match.params.id) : null;
+  const userMatch = useMatch("/users/:id");
+  const routedUser = userMatch
+    ? users.find((u) => u.id === userMatch.params.id)
+    : null;
+
+  const blogMatch = useMatch("/blogs/:id");
+  const routedBlog = blogMatch
+    ? blogs.find((b) => b.id === blogMatch.params.id)
+    : null;
 
   return user ? (
     // Blogs Area
@@ -175,6 +183,10 @@ const App = () => {
           }
         />
         <Route path="/users/:id" element={<User user={routedUser} />} />
+        <Route
+          path="/blogs/:id"
+          element={<BlogPage blog={routedBlog} handleLike={handleBlogLike} />}
+        />
       </Routes>
     </div>
   ) : (

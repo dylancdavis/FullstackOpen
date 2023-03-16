@@ -1,4 +1,5 @@
 import Togglable from "./Togglable";
+import { Link } from "react-router-dom";
 
 const Blog = ({ blog, handleBlogLike, handleBlogDelete }) => {
   const onLike = () => {
@@ -12,7 +13,7 @@ const Blog = ({ blog, handleBlogLike, handleBlogDelete }) => {
 
   return (
     <li key={blog.id} className="blog">
-      {blog.title} {blog.author}
+      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> {blog.author}
       <Togglable showText={"show"} hideText={"hide"}>
         <ul className="hidden-list">
           <li key="likes">
