@@ -8,6 +8,7 @@ import notificationReducer from "./reducers/notificationReducer";
 import blogsReducer, { setBlogs } from "./reducers/blogsReducer";
 import blogService from "./services/blogs";
 import userReducer from "./reducers/userReducer";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const store = configureStore({
   reducer: {
@@ -21,6 +22,8 @@ blogService.getAll().then((b) => store.dispatch(setBlogs(b)));
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <App />
+    <Router>
+      <App />
+    </Router>
   </Provider>
 );

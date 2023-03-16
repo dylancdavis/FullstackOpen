@@ -15,6 +15,9 @@ import { addBlog, deleteBlog, likeBlog } from "./reducers/blogsReducer";
 import { clearUser, setUser } from "./reducers/userReducer";
 import userService from "./services/users";
 
+import { Routes, Route, Link, useMatch } from "react-router-dom";
+import User from "./components/User";
+
 const App = () => {
   const blogs = useSelector((state) => state.blogs);
   const user = useSelector((state) => state.user);
@@ -108,6 +111,9 @@ const App = () => {
     }
   }, []);
 
+  const match = useMatch("/users/:id");
+  const routedUser = match ? users.find((u) => u.id === match.params.id) : null;
+
   return user ? (
     // Blogs Area
     <div>
@@ -119,40 +125,57 @@ const App = () => {
         </button>
         {")"}
       </div>
-      <h2>BLOGS</h2>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div>
+              <h2>BLOGS</h2>
+              <Togglable
+                showText={"Add Blog"}
+                hideText={"Cancel"}
+                ref={blogFormRef}
+              >
+                <NewBlogForm handleOnSubmit={handleBlogCreate} />
+              </Togglable>
+              <ul>
+                {blogs
+                  .slice()
+                  .sort((b1, b2) => b2.likes - b1.likes)
+                  .map((b) => (
+                    <Blog
+                      key={b.id}
+                      blog={b}
+                      handleBlogLike={handleBlogLike}
+                      handleBlogDelete={handleBlogDelete}
+                    />
+                  ))}
+              </ul>
+            </div>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <div className="users">
+              <h2>USERS</h2>
+              <ul>
+                {users.map((u) => {
+                  console.log(u);
 
-      <Togglable showText={"Add Blog"} hideText={"Cancel"} ref={blogFormRef}>
-        <NewBlogForm handleOnSubmit={handleBlogCreate} />
-      </Togglable>
-      <ul>
-        {blogs
-          .slice()
-          .sort((b1, b2) => b2.likes - b1.likes)
-          .map((b) => (
-            <Blog
-              key={b.id}
-              blog={b}
-              handleBlogLike={handleBlogLike}
-              handleBlogDelete={handleBlogDelete}
-            />
-          ))}
-      </ul>
-
-      <div className="users">
-        <h2>USERS</h2>
-        <ul>
-          {users.map((u) => {
-            console.log(u);
-
-            return (
-              <li key={u.id}>
-                {u.name}: {u.blogs.length}{" "}
-                {u.blogs.length === 1 ? "blog" : "blogs"}
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+                  return (
+                    <li key={u.id}>
+                      <Link to={`/users/${u.id}`}>{u.name}</Link>:{" "}
+                      {u.blogs.length} {u.blogs.length === 1 ? "blog" : "blogs"}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          }
+        />
+        <Route path="/users/:id" element={<User user={routedUser} />} />
+      </Routes>
     </div>
   ) : (
     // Login Form
