@@ -12,10 +12,11 @@ import {
 
 import "./app.css";
 import { addBlog, deleteBlog, likeBlog } from "./reducers/blogsReducer";
+import { clearUser, setUser } from "./reducers/userReducer";
 
 const App = () => {
   const blogs = useSelector((state) => state.blogs);
-  const [user, setUser] = useState(null);
+  const user = useSelector((state) => state.user);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -37,23 +38,21 @@ const App = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("login submit.");
-    console.log("username", username);
-    console.log("password", password);
+    console.log(
+      `Login submitted, username: ${username}, password: ${password}`
+    );
 
     try {
       const user = await loginService.login({ username, password });
-      console.log(user);
       window.localStorage.setItem("loggedInUser", JSON.stringify(user));
       blogService.setToken(user.token);
-      setUser(user);
+      dispatch(setUser(user));
       setUsername("");
       setPassword("");
-      console.log("login success", user);
+      console.log("Login successful, with user", user);
       notificationMessage(`logged in as ${user.name}`);
     } catch (e) {
       console.log(e.name, e.message);
-      console.log("error: incorrect login");
       notificationMessage("Incorrect username or password");
     }
   };
@@ -61,7 +60,7 @@ const App = () => {
   const handleLogout = () => {
     window.localStorage.removeItem("loggedInUser");
     blogService.setToken(null);
-    setUser(null);
+    dispatch(clearUser());
     notificationMessage("Logged out successfully");
   };
 
@@ -97,7 +96,7 @@ const App = () => {
       window.localStorage.getItem("loggedInUser")
     );
     if (loggedInUser) {
-      setUser(loggedInUser);
+      dispatch(setUser(loggedInUser));
       blogService.setToken(loggedInUser.token);
     }
   }, []);

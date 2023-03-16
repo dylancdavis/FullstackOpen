@@ -7,11 +7,13 @@ import { Provider } from "react-redux";
 import notificationReducer from "./reducers/notificationReducer";
 import blogsReducer, { setBlogs } from "./reducers/blogsReducer";
 import blogService from "./services/blogs";
+import userReducer from "./reducers/userReducer";
 
 const store = configureStore({
   reducer: {
     notification: notificationReducer,
     blogs: blogsReducer,
+    user: userReducer,
   },
 });
 
