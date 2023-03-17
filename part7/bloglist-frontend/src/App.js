@@ -15,8 +15,8 @@ import { Routes, Route, useMatch } from "react-router-dom";
 import User from "./components/User";
 import BlogPage from "./components/BlogPage";
 
-import { Alert } from "react-bootstrap";
 import Header from "./components/Header";
+import Notification from "./components/Notification";
 import Login from "./components/Login";
 import Blogs from "./components/Blogs";
 import Users from "./components/Users";
@@ -32,8 +32,6 @@ const App = () => {
   }, []);
 
   const dispatch = useDispatch();
-
-  const notification = useSelector((state) => state.notification);
 
   const notificationMessage = (message) => {
     dispatch(setNotification(message));
@@ -97,39 +95,38 @@ const App = () => {
     ? blogs.find((b) => b.id === blogMatch.params.id)
     : null;
 
-  return user ? (
-    // Blogs Area
+  return (
     <div className="container">
-      {notification && (
-        <Alert className="notification-box">{notification}</Alert>
-      )}
-      <Header user={user} handleLogout={handleLogout} />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Blogs
-              blogFormRef={blogFormRef}
-              blogs={blogs}
-              handleBlogCreate={handleBlogCreate}
-              handleBlogDelete={handleBlogDelete}
+      <Notification />
+      {user ? (
+        <div>
+          <Header user={user} handleLogout={handleLogout} />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Blogs
+                  blogFormRef={blogFormRef}
+                  blogs={blogs}
+                  handleBlogCreate={handleBlogCreate}
+                  handleBlogDelete={handleBlogDelete}
+                />
+              }
             />
-          }
-        />
-        <Route path="/users" element={<Users users={users} />} />
-        <Route path="/users/:id" element={<User user={routedUser} />} />
-        <Route
-          path="/blogs/:id"
-          element={<BlogPage blog={routedBlog} handleLike={handleBlogLike} />}
-        />
-      </Routes>
+            <Route path="/users" element={<Users users={users} />} />
+            <Route path="/users/:id" element={<User user={routedUser} />} />
+            <Route
+              path="/blogs/:id"
+              element={
+                <BlogPage blog={routedBlog} handleLike={handleBlogLike} />
+              }
+            />
+          </Routes>
+        </div>
+      ) : (
+        <Login notificationMessage={notificationMessage} />
+      )}
     </div>
-  ) : (
-    // Login Form
-    <Login
-      notification={notification}
-      notificationMessage={notificationMessage}
-    />
   );
 };
 

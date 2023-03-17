@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../reducers/userReducer";
 import { Button } from "react-bootstrap";
 
-const Login = ({ notification, notificationMessage }) => {
+const Login = ({ notificationMessage }) => {
   const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
@@ -37,7 +37,6 @@ const Login = ({ notification, notificationMessage }) => {
 
   return (
     <div className="container">
-      {notification && <p className="notification-box">{notification}</p>}
       <h1>login</h1>
       <form onSubmit={handleLogin}>
         <label>
