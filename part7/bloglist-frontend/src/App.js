@@ -73,6 +73,7 @@ const App = () => {
     if (!window.confirm(`Delete blog ${blog.title}?`)) return;
     await blogService.remove(blog.id);
     dispatch(deleteBlog(blog.id));
+    notificationMessage(`Deleted blog "${blog.title}"`, "secondary");
   };
 
   useEffect(() => {
