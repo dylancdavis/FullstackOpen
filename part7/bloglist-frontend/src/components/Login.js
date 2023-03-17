@@ -36,7 +36,7 @@ const Login = ({ notificationMessage }) => {
   };
 
   return (
-    <div className="container">
+    <div className="login">
       <h1>login</h1>
       <form onSubmit={handleLogin}>
         <label>

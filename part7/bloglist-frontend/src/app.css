@@ -1,5 +1,7 @@
-.notification-box {
-  background-color: dimgrey;
-  color: white;
-  padding: 12px;
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px;
+  gap: 32px
 }

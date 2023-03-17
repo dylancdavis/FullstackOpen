@@ -1,19 +1,27 @@
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Nav, Button } from "react-bootstrap";
 
 const Header = ({ user, handleLogout }) => {
   return (
-    <div>
-      <Link to="/">blogs</Link>
-      <Link to="/users">users</Link>
-      <div>
+    <Nav variant="pills">
+      <Nav.Item>
+        <Nav.Link as={Link} to="/">
+          blogs
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link as={Link} to="/users">
+          users
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
         {`(Logged in as ${user.name} `}
         <Button className="logout-button" onClick={handleLogout}>
           logout
         </Button>
         {")"}
-      </div>
-    </div>
+      </Nav.Item>
+    </Nav>
   );
 };
 
