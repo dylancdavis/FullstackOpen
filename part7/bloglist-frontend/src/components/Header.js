@@ -3,7 +3,7 @@ import { Nav, Button } from "react-bootstrap";
 
 const Header = ({ user, handleLogout }) => {
   return (
-    <Nav variant="pills">
+    <Nav>
       <Nav.Item>
         <Nav.Link as={Link} to="/">
           blogs

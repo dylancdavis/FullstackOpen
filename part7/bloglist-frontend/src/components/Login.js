@@ -3,7 +3,7 @@ import loginService from "../services/login";
 import blogService from "../services/blogs";
 import { useDispatch } from "react-redux";
 import { setUser } from "../reducers/userReducer";
-import { Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 const Login = ({ notificationMessage }) => {
   const dispatch = useDispatch();
@@ -38,29 +38,27 @@ const Login = ({ notificationMessage }) => {
   return (
     <div className="login">
       <h1>login</h1>
-      <form onSubmit={handleLogin}>
-        <label>
-          username
-          <input
+      <Form onSubmit={handleLogin}>
+        <Form.Group className="mt-3">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
             className="input-username"
             value={username}
             onChange={handleUsernameChange}
           />
-        </label>
-        <br></br>
-        <label>
-          password
-          <input
+        </Form.Group>
+        <Form.Group className="mt-3">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             className="input-password"
             value={password}
             onChange={handlePasswordChange}
           />
-        </label>
-        <br></br>
-        <Button className="submit-button" type="submit">
-          login
+        </Form.Group>
+        <Button className="submit-button mt-3" type="submit">
+          Login
         </Button>
-      </form>
+      </Form>
     </div>
   );
 };
