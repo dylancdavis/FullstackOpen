@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
-const Blog = ({ blog, handleBlogDelete }) => {
+const BlogItem = ({ blog, handleBlogDelete }) => {
   const onDelete = () => {
     handleBlogDelete(blog);
   };
@@ -20,4 +20,4 @@ const Blog = ({ blog, handleBlogDelete }) => {
   );
 };
 
-export default Blog;
+export default BlogItem;
