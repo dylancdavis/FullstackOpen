@@ -3,7 +3,7 @@ import { Nav, Button } from "react-bootstrap";
 
 const Navbar = ({ user, handleLogout }) => {
   return (
-    <Nav>
+    <Nav className="mb-3">
       <Nav.Item className="h1">
         <Nav.Link as={Link} to="/">
           blogs

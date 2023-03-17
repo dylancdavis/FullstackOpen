@@ -28,9 +28,9 @@ const NewBlogForm = ({ handleOnSubmit }) => {
 
   return (
     <>
-      <h2>Create New Blog</h2>
+      <h2 className="mt-3">Create New Blog</h2>
       <Form onSubmit={clearAndSubmit}>
-        <Form.Group>
+        <Form.Group className="mt-3">
           <Form.Label>Title:</Form.Label>
           <Form.Control
             className="title-input"
@@ -38,7 +38,7 @@ const NewBlogForm = ({ handleOnSubmit }) => {
             onChange={handleTitleChange}
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mt-3">
           <Form.Label>Author:</Form.Label>
           <Form.Control
             className="author-input"
@@ -46,7 +46,7 @@ const NewBlogForm = ({ handleOnSubmit }) => {
             onChange={handleAuthorChange}
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="mt-3">
           <Form.Label>URL:</Form.Label>
           <Form.Control
             className="url-input"
@@ -54,7 +54,7 @@ const NewBlogForm = ({ handleOnSubmit }) => {
             onChange={handleUrlChange}
           />
         </Form.Group>
-        <Button className="submit-button" type="submit">
+        <Button className="submit-button mt-3" type="submit">
           Create Blog
         </Button>
       </Form>
