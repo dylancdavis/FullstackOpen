@@ -18,3 +18,7 @@
   gap: 16px;
   font-style: italic
 }
+
+.blogs, .users {
+  margin-left: 16px;
+}

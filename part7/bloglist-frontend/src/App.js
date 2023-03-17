@@ -59,7 +59,7 @@ const App = () => {
     const createdBlog = await blogService.create(blogToPost);
     dispatch(addBlog(createdBlog));
 
-    notificationMessage("Created new blog", "success");
+    notificationMessage(`Added blog "${title}"`, "success");
     blogFormRef.current.toggleVisibility();
   };
 

@@ -5,7 +5,7 @@ import BlogItem from "./BlogItem";
 
 const Blogs = ({ blogFormRef, blogs, handleBlogCreate, handleBlogDelete }) => {
   return (
-    <div>
+    <div className="blogs">
       <h2>BLOGS</h2>
       <Table striped="columns">
         {blogs
