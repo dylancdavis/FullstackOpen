@@ -15,7 +15,7 @@ import { Routes, Route, useMatch } from "react-router-dom";
 import User from "./components/User";
 import BlogPage from "./components/BlogPage";
 
-import Header from "./components/Header";
+import Header from "./components/Navbar";
 import Notification from "./components/Notification";
 import Login from "./components/Login";
 import Blogs from "./components/Blogs";

@@ -1,28 +1,27 @@
 import { Link } from "react-router-dom";
 import { Nav, Button } from "react-bootstrap";
 
-const Header = ({ user, handleLogout }) => {
+const Navbar = ({ user, handleLogout }) => {
   return (
     <Nav>
-      <Nav.Item>
+      <Nav.Item className="h1">
         <Nav.Link as={Link} to="/">
           blogs
         </Nav.Link>
       </Nav.Item>
-      <Nav.Item>
+      <Nav.Item className="h1">
         <Nav.Link as={Link} to="/users">
           users
         </Nav.Link>
       </Nav.Item>
-      <Nav.Item>
-        {`(Logged in as ${user.name} `}
+      <Nav.Item className="h3 login-info">
+        <span className="login-text">{`Logged in as ${user.name}`}</span>
         <Button className="logout-button" onClick={handleLogout}>
           logout
         </Button>
-        {")"}
       </Nav.Item>
     </Nav>
   );
 };
 
-export default Header;
+export default Navbar;
