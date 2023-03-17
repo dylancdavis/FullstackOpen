@@ -33,8 +33,8 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const notificationMessage = (message) => {
-    dispatch(setNotification(message));
+  const notificationMessage = (message, variant) => {
+    dispatch(setNotification({ message, variant }));
 
     setTimeout(() => {
       dispatch(clearNotification());
@@ -45,7 +45,7 @@ const App = () => {
     window.localStorage.removeItem("loggedInUser");
     blogService.setToken(null);
     dispatch(clearUser());
-    notificationMessage("Logged out successfully");
+    notificationMessage("Logged out successfully", "secondary");
   };
 
   const blogFormRef = useRef();
@@ -59,7 +59,7 @@ const App = () => {
     const createdBlog = await blogService.create(blogToPost);
     dispatch(addBlog(createdBlog));
 
-    notificationMessage("Created new blog");
+    notificationMessage("Created new blog", "success");
     blogFormRef.current.toggleVisibility();
   };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { commentOn } from "../reducers/blogsReducer";
 import blogService from "../services/blogs";
+import { Button } from "react-bootstrap";
 
 const BlogPage = ({ blog, handleLike }) => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const BlogPage = ({ blog, handleLike }) => {
       </h1>
       <h3>{blog.url}</h3>
       <p>
-        Likes: {blog.likes} <button onClick={onLike}>Like</button>
+        Likes: {blog.likes} <Button onClick={onLike}>Like</Button>
       </p>
       <p>Added by {blog.user.name} </p>
       <h3>Comments:</h3>
@@ -44,7 +45,7 @@ const BlogPage = ({ blog, handleLike }) => {
           value={comment}
           onChange={handleCommentChange}
         />
-        <button onClick={handleSubmit}>add</button>
+        <Button onClick={handleSubmit}>add</Button>
       </form>
       {blog.comments.length ? (
         <>

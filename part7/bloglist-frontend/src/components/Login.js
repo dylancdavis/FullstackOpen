@@ -28,10 +28,10 @@ const Login = ({ notificationMessage }) => {
       setUsername("");
       setPassword("");
       console.log("Login successful, with user", user);
-      notificationMessage(`logged in as ${user.name}`);
+      notificationMessage(`logged in as ${user.name}`, "success");
     } catch (e) {
       console.log(e.name, e.message);
-      notificationMessage("Incorrect username or password");
+      notificationMessage("Incorrect username or password", "danger");
     }
   };
 
