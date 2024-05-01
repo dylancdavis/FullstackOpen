@@ -8,17 +8,9 @@ const Authors = (props) => {
   const [selectedAuthor, setSelectedAuthor] = useState('');
   const [birthYear, setBirthYear] = useState('');
 
-  if (!props.show) {
-    return null;
-  }
-
-  if (loading) {
-    return 'Loading...';
-  }
-
-  if (error) {
-    return error.toString();
-  }
+  if (!props.show) return null;
+  if (loading) return 'Loading...';
+  if (error) return error.toString();
 
   const updateBirthYear = (event) => {
     event.preventDefault();
