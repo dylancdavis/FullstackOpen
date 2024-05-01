@@ -21,6 +21,10 @@ const Authors = (props) => {
     return 'Loading...';
   }
 
+  if (error) {
+    return error.toString();
+  }
+
   const authors = data.allAuthors;
 
   return (
