@@ -48,8 +48,6 @@ authorSchema.plugin(uniqueValidator);
 const Book = mongoose.model('Book', bookSchema);
 const Author = mongoose.model('Author', authorSchema);
 
-let incrementingID = 1;
-
 let authors = [
   {
     name: 'Robert Martin',
@@ -133,10 +131,6 @@ let books = [
     genres: ['classic', 'revolution'],
   },
 ];
-
-/*
-  you can remove the placeholder query once your first one has been implemented 
-*/
 
 const typeDefs = `
   type Author {
