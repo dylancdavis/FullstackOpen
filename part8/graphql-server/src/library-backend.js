@@ -182,15 +182,12 @@ const resolvers = {
         filter.genres = args.genre;
       }
       if (args.author) {
-        console.log({ author: args.author });
         const foundAuthor = await Author.findOne({ name: args.author });
         if (!foundAuthor) {
           throw new GraphQLError(`Author ${args.author} not found`);
         }
-        console.log({ foundAuthor });
         filter.author = foundAuthor._id;
       }
-      console.log({ filter });
       return Book.find(filter);
     },
     allAuthors: async () => Author.find({}),
@@ -208,7 +205,6 @@ const resolvers = {
     },
     editAuthor: async (root, args) => {
       const foundAuthor = await Author.findOne({ name: args.name });
-      console.log({ foundAuthor });
       if (!foundAuthor) {
         throw new GraphQLError(`Author ${args.name} not found`);
       }
