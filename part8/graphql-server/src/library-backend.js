@@ -5,7 +5,7 @@ const uniqueValidator = require('mongoose-unique-validator');
 require('dotenv').config();
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI, { dbName: 'library' })
   .then(() => {
     console.log('Sucessfully connected to MongoDB.');
   })
