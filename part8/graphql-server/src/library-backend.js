@@ -175,8 +175,12 @@ const resolvers = {
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
-      // TODO: Implement filtering by author and genre
-      return Book.find({});
+      let filter = {};
+      if (args.genre) {
+        // Note conversion to plural
+        filter.genres = args.genre;
+      }
+      return Book.find(filter);
     },
     allAuthors: async () => Author.find({}),
   },
