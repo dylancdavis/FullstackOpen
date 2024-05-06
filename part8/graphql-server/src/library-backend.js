@@ -195,9 +195,10 @@ const resolvers = {
   Mutation: {
     addBook: async (root, args) => {
       const fields = { ...args };
-      const foundAuthor = await Author.findOne({ name: fields.author });
+      let foundAuthor = await Author.findOne({ name: fields.author });
       if (!foundAuthor) {
-        throw new GraphQLError(`Author ${fields.author} not found`);
+        let newAuthor = new Author({ name: args.author });
+        foundAuthor = await newAuthor.save();
       }
       fields.author = foundAuthor.id;
       const newBook = new Book(fields);
