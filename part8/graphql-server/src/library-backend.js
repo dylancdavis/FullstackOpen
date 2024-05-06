@@ -182,7 +182,10 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
-      const newBook = new Book(args);
+      const fields = { ...args };
+      const foundAuthor = await Author.findOne({ name: fields.author });
+      fields.author = foundAuthor.id;
+      const newBook = new Book(fields);
       return newBook.save();
     },
     editAuthor: (root, args) => {
