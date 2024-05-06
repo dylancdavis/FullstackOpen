@@ -180,6 +180,13 @@ const resolvers = {
         // Note conversion to plural
         filter.genres = args.genre;
       }
+      if (args.author) {
+        console.log({ author: args.author });
+        const foundAuthor = await Author.findOne({ name: args.author });
+        console.log({ foundAuthor });
+        filter.author = foundAuthor._id;
+      }
+      console.log({ filter });
       return Book.find(filter);
     },
     allAuthors: async () => Author.find({}),
