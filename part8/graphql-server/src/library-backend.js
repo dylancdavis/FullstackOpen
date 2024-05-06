@@ -178,39 +178,18 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
-    allBooks: (root, args) => {
-      let filteredBooks = books;
-      if (args.author) {
-        filteredBooks = filteredBooks.filter((b) => b.author === args.author);
-      }
-      if (args.genre) {
-        filteredBooks = filteredBooks.filter((b) =>
-          b.genres.includes(args.genre)
-        );
-      }
-      return filteredBooks;
+    bookCount: async () => Book.collection.countDocuments(),
+    authorCount: async () => Author.collection.countDocuments(),
+    allBooks: async (root, args) => {
+      // TODO: Implement filtering by author and genre
+      return Book.find({});
     },
-    allAuthors: () => authors,
+    allAuthors: async () => Author.find({}),
   },
   Mutation: {
-    addBook: (root, args) => {
-      const newBook = {
-        title: args.title,
-        published: args.published,
-        author: args.author,
-        genres: args.genres,
-        id: incrementingID++,
-      };
-      if (!authors.find((a) => a.name === args.author)) {
-        authors.push({
-          id: incrementingID++,
-          name: args.author,
-        });
-      }
-      books.push(newBook);
-      return newBook;
+    addBook: async (root, args) => {
+      const newBook = new Book(args);
+      return newBook.save();
     },
     editAuthor: (root, args) => {
       const foundAuthor = authors.find((a) => a.name === args.name);
