@@ -188,11 +188,10 @@ const resolvers = {
       const newBook = new Book(fields);
       return newBook.save();
     },
-    editAuthor: (root, args) => {
-      const foundAuthor = authors.find((a) => a.name === args.name);
-      if (!foundAuthor) return null;
+    editAuthor: async (root, args) => {
+      const foundAuthor = await Author.findOne({ name: args.name });
       foundAuthor.born = args.setBornTo;
-      return foundAuthor;
+      return foundAuthor.save();
     },
   },
   Author: {
