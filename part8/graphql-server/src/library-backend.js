@@ -2,6 +2,7 @@ const { ApolloServer } = require('@apollo/server');
 const { startStandaloneServer } = require('@apollo/server/standalone');
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const { GraphQLError } = require('graphql');
 require('dotenv').config();
 
 mongoose
@@ -183,6 +184,9 @@ const resolvers = {
       if (args.author) {
         console.log({ author: args.author });
         const foundAuthor = await Author.findOne({ name: args.author });
+        if (!foundAuthor) {
+          throw new GraphQLError(`Author ${args.author} not found`);
+        }
         console.log({ foundAuthor });
         filter.author = foundAuthor._id;
       }
@@ -195,12 +199,19 @@ const resolvers = {
     addBook: async (root, args) => {
       const fields = { ...args };
       const foundAuthor = await Author.findOne({ name: fields.author });
+      if (!foundAuthor) {
+        throw new GraphQLError(`Author ${fields.author} not found`);
+      }
       fields.author = foundAuthor.id;
       const newBook = new Book(fields);
       return newBook.save();
     },
     editAuthor: async (root, args) => {
       const foundAuthor = await Author.findOne({ name: args.name });
+      console.log({ foundAuthor });
+      if (!foundAuthor) {
+        throw new GraphQLError(`Author ${args.name} not found`);
+      }
       foundAuthor.born = args.setBornTo;
       return foundAuthor.save();
     },
