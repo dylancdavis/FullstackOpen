@@ -1,15 +1,52 @@
 const { ApolloServer } = require('@apollo/server');
 const { startStandaloneServer } = require('@apollo/server/standalone');
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 require('dotenv').config();
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose
+  .connect(process.env.MONGODB_URI)
   .then(() => {
-    console.log('Sucessfully connected to MongoDB.')
+    console.log('Sucessfully connected to MongoDB.');
   })
   .catch((error) => {
-    console.log('Error connecting to MongoDB:', error.message)
-  })
+    console.log('Error connecting to MongoDB:', error.message);
+  });
+
+const bookSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 5,
+  },
+  published: {
+    type: Number,
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Author',
+  },
+  genres: [{ type: String }],
+});
+
+const authorSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 4,
+  },
+  born: {
+    type: Number,
+  },
+});
+
+bookSchema.plugin(uniqueValidator);
+authorSchema.plugin(uniqueValidator);
+
+const Book = mongoose.model('Book', bookSchema);
+const Author = mongoose.model('Author', authorSchema);
 
 let incrementingID = 1;
 
