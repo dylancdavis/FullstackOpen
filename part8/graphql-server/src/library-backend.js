@@ -218,7 +218,7 @@ const resolvers = {
       }
     },
     login: async (root, args) => {
-      const foundUser = User.findOne({ username: args.username });
+      const foundUser = await User.findOne({ username: args.username });
       if (!foundUser || args.password !== 'hunter2') {
         throw new GraphQLError('Incorrect username or password', {
           extensions: { code: 'BAD_USER_INPUT' },
