@@ -168,15 +168,43 @@ const resolvers = {
   },
   Mutation: {
     addBook: async (root, args) => {
-      const fields = { ...args };
-      let foundAuthor = await Author.findOne({ name: fields.author });
-      if (!foundAuthor) {
-        let newAuthor = new Author({ name: args.author });
-        foundAuthor = await newAuthor.save();
+      if (args.title.length < 5) {
+        throw new GraphQLError(
+          'Unable to add book: title must be at least 5 characters long',
+          { extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.title } }
+        );
       }
+      let foundAuthor = await Author.findOne({ name: args.author });
+      if (!foundAuthor) {
+        if (args.author.length < 4) {
+          throw new GraphQLError(
+            'Unable to add author: name must be at least 4 characters long',
+            { extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.author } }
+          );
+        }
+        let newAuthor = new Author({ name: args.author });
+        try {
+          foundAuthor = await newAuthor.save();
+        } catch (error) {
+          throw new GraphQLError('Unable to add author', {
+            extensions: {
+              code: 'BAD_USER_INPUT',
+              invalidArgs: args.author,
+              error,
+            },
+          });
+        }
+      }
+      const fields = { ...args };
       fields.author = foundAuthor.id;
       const newBook = new Book(fields);
-      return newBook.save();
+      try {
+        return newBook.save();
+      } catch (error) {
+        throw new GraphQLError('Unable to add book', {
+          extensions: { code: 'BAD_USER_INPUT', invalidArgs: args, error },
+        });
+      }
     },
     editAuthor: async (root, args) => {
       const foundAuthor = await Author.findOne({ name: args.name });
