@@ -297,6 +297,15 @@ const server = new ApolloServer({
 
 startStandaloneServer(server, {
   listen: { port: 4000 },
+  context: async ({ req, res }) => {
+    const auth = req ? req.headers.authorization : null;
+    if (auth && auth.startsWith('Bearer ')) {
+      const encodedToken = auth.substring(7);
+      const decodedToken = jwt.verify(encodedToken, 'hunter2');
+      const foundUser = await User.findById(decodedToken.id);
+      return { currentUser: foundUser };
+    }
+  },
 }).then(({ url }) => {
   console.log(`Server ready at ${url}`);
 });
