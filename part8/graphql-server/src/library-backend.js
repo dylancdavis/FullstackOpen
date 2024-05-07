@@ -14,6 +14,14 @@ mongoose
     console.log('Error connecting to MongoDB:', error.message);
   });
 
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    minlength: 3,
+  },
+});
+
 const bookSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -43,9 +51,11 @@ const authorSchema = new mongoose.Schema({
   },
 });
 
+userSchema.plugin(uniqueValidator);
 bookSchema.plugin(uniqueValidator);
 authorSchema.plugin(uniqueValidator);
 
+const User = mongoose.model('User', userSchema);
 const Book = mongoose.model('Book', bookSchema);
 const Author = mongoose.model('Author', authorSchema);
 
