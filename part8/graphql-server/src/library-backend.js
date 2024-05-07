@@ -108,6 +108,16 @@ let books = [
 ];
 
 const typeDefs = `
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
+
   type Author {
     name: String!
     id: ID!
@@ -125,6 +135,7 @@ const typeDefs = `
 
 
   type Query {
+    me: User
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
@@ -132,6 +143,14 @@ const typeDefs = `
   }
 
   type Mutation {
+    createUser(
+      username: String!
+      favoriteGenre: String!
+    ): User
+    login(
+      username: String!
+      password: String!
+    ): Token
     addBook(
       title: String!
       author: String!
@@ -213,7 +232,6 @@ const resolvers = {
       }
       foundAuthor.born = args.setBornTo;
       try {
-
         return foundAuthor.save();
       } catch (error) {
         throw new GraphQLError('Unable to update author', {
