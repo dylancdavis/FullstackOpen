@@ -181,6 +181,7 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
+    me: (root, args, context) => context.currentUser,
     bookCount: async () => Book.collection.countDocuments(),
     authorCount: async () => Author.collection.countDocuments(),
     allBooks: async (root, args) => {
