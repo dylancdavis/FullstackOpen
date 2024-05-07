@@ -232,7 +232,12 @@ const resolvers = {
       const token = jwt.sign(userForToken, process.env.JWT_SECRET);
       return { value: token };
     },
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
+      if (!context.currentUser) {
+        throw new GraphQLError('You must be logged in to add books', {
+          extensions: { code: 'UNAUTHORIZED' },
+        });
+      }
       if (args.title.length < 5) {
         throw new GraphQLError(
           'Unable to add book: title must be at least 5 characters long',
@@ -271,7 +276,12 @@ const resolvers = {
         });
       }
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
+      if (!context.currentUser) {
+        throw new GraphQLError('You must be logged in to edit authors', {
+          extensions: { code: 'UNAUTHORIZED' },
+        });
+      }
       const foundAuthor = await Author.findOne({ name: args.name });
       if (!foundAuthor) {
         throw new GraphQLError(`Author ${args.name} not found`);
