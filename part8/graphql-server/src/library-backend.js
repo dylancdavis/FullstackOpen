@@ -3,6 +3,7 @@ const { startStandaloneServer } = require('@apollo/server/standalone');
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const { GraphQLError } = require('graphql');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 mongoose
@@ -19,6 +20,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 3,
+  },
+  favoriteGenre: {
+    type: String,
+    required: true,
   },
 });
 
@@ -196,6 +201,36 @@ const resolvers = {
     allAuthors: async () => Author.find({}),
   },
   Mutation: {
+    createUser: async (root, args) => {
+      if (args.username.length < 3) {
+        throw new GraphQLError(
+          'Unable to create user: username must be at least 3 characters long',
+          { extensions: { code: 'BAD_USER_INPUT', invalidArgs: args.username } }
+        );
+      }
+      const newUser = new User({ ...args });
+      try {
+        return newUser.save();
+      } catch (error) {
+        throw new GraphQLError('Unable to create user', {
+          extensions: { code: 'BAD_USER_INPUT', invalidArgs: args, error },
+        });
+      }
+    },
+    login: async (root, args) => {
+      const foundUser = User.findOne({ username: args.username });
+      if (!foundUser || args.password !== 'hunter2') {
+        throw new GraphQLError('Incorrect username or password', {
+          extensions: { code: 'BAD_USER_INPUT' },
+        });
+      }
+      const userForToken = {
+        username: foundUser.username,
+        id: foundUser._id,
+      };
+      const token = jwt.sign(userForToken, 'hunter2');
+      return { value: token };
+    },
     addBook: async (root, args) => {
       if (args.title.length < 5) {
         throw new GraphQLError(
