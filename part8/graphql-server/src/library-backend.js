@@ -228,7 +228,7 @@ const resolvers = {
         username: foundUser.username,
         id: foundUser._id,
       };
-      const token = jwt.sign(userForToken, 'hunter2');
+      const token = jwt.sign(userForToken, process.env.JWT_SECRET);
       return { value: token };
     },
     addBook: async (root, args) => {
@@ -301,7 +301,7 @@ startStandaloneServer(server, {
     const auth = req ? req.headers.authorization : null;
     if (auth && auth.startsWith('Bearer ')) {
       const encodedToken = auth.substring(7);
-      const decodedToken = jwt.verify(encodedToken, 'hunter2');
+      const decodedToken = jwt.verify(encodedToken, process.env.JWT_SECRET);
       const foundUser = await User.findById(decodedToken.id);
       return { currentUser: foundUser };
     }
