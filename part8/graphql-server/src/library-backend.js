@@ -212,7 +212,14 @@ const resolvers = {
         throw new GraphQLError(`Author ${args.name} not found`);
       }
       foundAuthor.born = args.setBornTo;
-      return foundAuthor.save();
+      try {
+
+        return foundAuthor.save();
+      } catch (error) {
+        throw new GraphQLError('Unable to update author', {
+          extensions: { code: 'BAD_USER_INPUT', invalidArgs: args, error },
+        });
+      }
     },
   },
   Author: {
