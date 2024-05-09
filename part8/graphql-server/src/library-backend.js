@@ -270,7 +270,7 @@ const resolvers = {
       fields.author = foundAuthor._id;
       const newBook = new Book(fields);
       try {
-        return newBook.save();
+        return newBook.save().then((b) => b.populate('author'));
       } catch (error) {
         throw new GraphQLError('Unable to add book', {
           extensions: { code: 'BAD_USER_INPUT', invalidArgs: args, error },
