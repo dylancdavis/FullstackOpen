@@ -197,7 +197,7 @@ const resolvers = {
         }
         filter.author = foundAuthor._id;
       }
-      return Book.find(filter);
+      return Book.find(filter).populate('author');
     },
     allAuthors: async () => Author.find({}),
   },
@@ -266,7 +266,7 @@ const resolvers = {
         }
       }
       const fields = { ...args };
-      fields.author = foundAuthor.id;
+      fields.author = foundAuthor._id;
       const newBook = new Book(fields);
       try {
         return newBook.save();
