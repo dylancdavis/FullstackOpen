@@ -4,7 +4,13 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const { GraphQLError } = require('graphql');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+
+const dirnameArray = __dirname.split('/');
+dirnameArray.pop();
+dirnameArray.push('.env');
+
+const ENV_PATH = dirnameArray.join('/');
+require('dotenv').config({ path: ENV_PATH });
 
 mongoose
   .connect(process.env.MONGODB_URI, { dbName: 'library' })
