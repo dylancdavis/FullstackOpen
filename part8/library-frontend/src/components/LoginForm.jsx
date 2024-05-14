@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function LoginForm({ show }) {
+export default function LoginForm({ show, setToken }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -9,6 +9,9 @@ export default function LoginForm({ show }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log({ username, password });
+    const token = 'dummy';
+    setToken(token);
+    window.localStorage.setItem('library-token', token);
   };
 
   return (
