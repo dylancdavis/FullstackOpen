@@ -25,13 +25,13 @@ const App = () => {
       <div>
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
-        <button onClick={() => setPage('add')}>add book</button>
+        <button hidden={!token} onClick={() => setPage('add')}>add book</button>
         <button hidden={token} onClick={() => setPage('login')}>
           login
         </button>
       </div>
 
-      <Authors show={page === 'authors'} />
+      <Authors show={page === 'authors'} token={token} />
 
       <Books show={page === 'books'} />
 

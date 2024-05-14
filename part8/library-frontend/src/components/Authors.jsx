@@ -47,26 +47,28 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <h2>Set birth year</h2>
-      <select
-        value={selectedAuthor}
-        onChange={(event) => setSelectedAuthor(event.target.value)}
-      >
-        <option value="">Select One</option>
-        {authors.map((author) => (
-          <option key={author.id} value={author.name}>
-            {author.name}
-          </option>
-        ))}
-      </select>
-      <input
-        type="number"
-        value={birthYear}
-        onChange={(event) => setBirthYear(event.target.value)}
-      />
-      <button type="submit" onClick={handleUpdate}>
-        update birth year
-      </button>
+      {props.token && <div>
+        <h2>Set birth year</h2>
+        <select
+          value={selectedAuthor}
+          onChange={(event) => setSelectedAuthor(event.target.value)}
+        >
+          <option value="">Select One</option>
+          {authors.map((author) => (
+            <option key={author.id} value={author.name}>
+              {author.name}
+            </option>
+          ))}
+        </select>
+        <input
+          type="number"
+          value={birthYear}
+          onChange={(event) => setBirthYear(event.target.value)}
+        />
+        <button type="submit" onClick={handleUpdate}>
+          update birth year
+        </button>
+      </div>}
     </div>
   );
 };
