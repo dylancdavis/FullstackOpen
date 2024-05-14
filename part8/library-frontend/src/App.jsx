@@ -9,6 +9,12 @@ const App = () => {
 
   const [token, setToken] = useState(null);
 
+  const onLogin = token => {
+    setToken(token)
+    setPage('authors')
+    window.localStorage.setItem('library-token', token);
+  }
+
   return (
     <div>
       <div>
@@ -26,7 +32,7 @@ const App = () => {
 
       <NewBook show={page === 'add'} />
 
-      <LoginForm show={page === 'login'} setToken={setToken} />
+      <LoginForm show={page === 'login'} onLogin={onLogin} />
     </div>
   );
 };

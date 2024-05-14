@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../queries';
 
-export default function LoginForm({ show, setToken }) {
+export default function LoginForm({ show, onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [login] = useMutation(LOGIN);
@@ -12,10 +12,8 @@ export default function LoginForm({ show, setToken }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await login({ variables: { username, password } });
-    console.log({ response });
     const token = response.data.login.value
-    setToken(token);
-    window.localStorage.setItem('library-token', token);
+    onLogin(token);
   };
 
   return (
