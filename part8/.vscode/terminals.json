@@ -1,0 +1,27 @@
+{
+    "autorun": false,
+    "terminals": [
+      {
+        "name": "Git",
+        "focus": true,
+        "color": "terminal.ansiYellow",
+        "icon": "git-branch",
+        "command": "git status"
+      },
+      {
+        "name": "Vite",
+        "color": "terminal.ansiCyan",
+        "icon": "preview",
+        "cwd": "./library-frontend",
+        "command": "npm run dev"
+      },
+      {
+        "name": "Apollo",
+        "color": "terminal.ansiMagenta",
+        "icon": "layers",
+        "cwd": "./graphql-server",
+        "command": "node ."
+
+      }
+    ]
+  }
