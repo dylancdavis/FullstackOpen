@@ -15,6 +15,11 @@ const App = () => {
     window.localStorage.setItem('library-token', token);
   }
 
+  const onLogout = () => {
+    setToken(null)
+    window.localStorage.removeItem('library-token')
+  }
+
   return (
     <div>
       <div>
@@ -32,7 +37,7 @@ const App = () => {
 
       <NewBook show={page === 'add'} />
 
-      <LoginForm show={page === 'login'} onLogin={onLogin} />
+      {token ? <button onClick={onLogout}>Logout</button> : <LoginForm show={page === 'login'} onLogin={onLogin} />}
     </div>
   );
 };
