@@ -17,6 +17,7 @@ const App = () => {
 
   const onLogout = () => {
     setToken(null);
+    setPage('authors')
     window.localStorage.removeItem('library-token');
   };
 
