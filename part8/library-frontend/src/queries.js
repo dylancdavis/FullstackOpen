@@ -8,6 +8,23 @@ export const LOGIN = gql`
   }
 `;
 
+`type Query {
+  me: User
+  bookCount: Int!
+  authorCount: Int!
+  allBooks(author: String, genre: String): [Book!]!
+  allAuthors: [Author!]!
+}`;
+
+export const ME = gql`
+  query {
+    me {
+      username
+      favoriteGenre
+    }
+  }
+`;
+
 export const ALL_BOOKS = gql`
   query {
     allBooks {
