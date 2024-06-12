@@ -9,8 +9,12 @@ const Books = (props) => {
   });
 
   useSubscription(BOOK_ADDED, {
-    onData: ({ data }) => {
-      window.alert(`New Book Added: ${data.data.bookAdded.title}`);
+    onData: ({ data, client }) => {
+      alert('cache updated.');
+      const newBook = data.data.bookAdded;
+      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
+        return { allBooks: allBooks.concat(newBook) };
+      });
     },
   });
 
