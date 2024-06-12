@@ -1,3 +1,6 @@
+const { User, Book, Author } = require('./schema.js');
+const { GraphQLError } = require('graphql');
+
 const resolvers = {
   Query: {
     me: (root, args, context) => context.currentUser,

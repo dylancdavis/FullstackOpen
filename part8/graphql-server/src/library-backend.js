@@ -1,12 +1,12 @@
 const { ApolloServer } = require('@apollo/server');
 const { startStandaloneServer } = require('@apollo/server/standalone');
 const mongoose = require('mongoose');
-const { GraphQLError } = require('graphql');
+
 const jwt = require('jsonwebtoken');
 const path = require('node:path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
-const { User, Book, Author } = require('./schema.js');
+const { User } = require('./schema.js');
 const { typeDefs } = require('./typeDefs.js');
 const { resolvers } = require('./resolvers.js');
 
