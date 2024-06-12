@@ -2,6 +2,7 @@ const { User, Book, Author } = require('./schema.js');
 const { GraphQLError } = require('graphql');
 const { PubSub } = require('graphql-subscriptions');
 const pubsub = new PubSub();
+const jwt = require('jsonwebtoken');
 
 const resolvers = {
   Query: {
@@ -93,7 +94,9 @@ const resolvers = {
       fields.author = foundAuthor._id;
       const newBook = new Book(fields);
       try {
-        return newBook.save().then((b) => b.populate('author'));
+        const savedBook = newBook.save().then((b) => b.populate('author'));
+        pubsub.publish('BOOK_ADDED', { bookAdded: savedBook });
+        return savedBook;
       } catch (error) {
         throw new GraphQLError('Unable to add book', {
           extensions: { code: 'BAD_USER_INPUT', invalidArgs: args, error },
@@ -119,6 +122,9 @@ const resolvers = {
         });
       }
     },
+  },
+  Subscription: {
+    bookAdded: { subscribe: () => pubsub.asyncIterator('BOOK_ADDED') },
   },
   Author: {
     bookCount: async (root) => Book.countDocuments({ author: root.id }),
