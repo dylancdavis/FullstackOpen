@@ -74,3 +74,17 @@ export const UPDATE_BIRTHYEAR = gql`
     }
   }
 `;
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      id
+      title
+      author {
+        name
+      }
+      published
+      genres
+    }
+  }
+`;
