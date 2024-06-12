@@ -1,5 +1,4 @@
-module.exports = {
-  typeDefs: `
+const typeDefs = `
   type User {
     username: String!
     favoriteGenre: String!
@@ -54,5 +53,6 @@ module.exports = {
       setBornTo: Int!
     ): Author
   }
-`,
-};
+`;
+
+module.exports = { typeDefs };
