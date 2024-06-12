@@ -1,5 +1,7 @@
 const { User, Book, Author } = require('./schema.js');
 const { GraphQLError } = require('graphql');
+const { PubSub } = require('graphql-subscriptions');
+const pubsub = new PubSub();
 
 const resolvers = {
   Query: {
