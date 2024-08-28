@@ -11,10 +11,13 @@ const Books = (props) => {
   useSubscription(BOOK_ADDED, {
     onData: ({ data, client }) => {
       const newBook = data.data.bookAdded;
-      client.cache.updateQuery({ query: ALL_BOOKS }, ({ allBooks }) => {
-        alert(`Added ${newBook.title} by ${newBook.author.name}`);
-        return { allBooks: allBooks.concat(newBook) };
-      });
+      client.cache.updateQuery(
+        { query: ALL_BOOKS, variables: { genre: filteredGenre } },
+        ({ allBooks }) => {
+          alert(`Added ${newBook.title} by ${newBook.author.name}`);
+          return { allBooks: allBooks.concat(newBook) };
+        }
+      );
     },
   });
 
