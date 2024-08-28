@@ -42,6 +42,12 @@ const authorSchema = new mongoose.Schema({
   },
 });
 
+authorSchema.virtual('books', {
+  ref: 'Book',
+  localField: '_id',
+  foreignField: 'author',
+});
+
 userSchema.plugin(uniqueValidator);
 bookSchema.plugin(uniqueValidator);
 authorSchema.plugin(uniqueValidator);
