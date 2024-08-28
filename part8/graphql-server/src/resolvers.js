@@ -24,7 +24,7 @@ const resolvers = {
       }
       return Book.find(filter).populate('author');
     },
-    allAuthors: async () => Author.find({}),
+    allAuthors: async () => Author.find({}).populate('books'),
   },
   Mutation: {
     createUser: async (root, args) => {
@@ -127,7 +127,9 @@ const resolvers = {
     bookAdded: { subscribe: () => pubsub.asyncIterator('BOOK_ADDED') },
   },
   Author: {
-    bookCount: async (root) => Book.countDocuments({ author: root.id }),
+    bookCount: async (root) => {
+      return root.books.length;
+    },
   },
 };
 
