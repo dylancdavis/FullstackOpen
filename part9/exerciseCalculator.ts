@@ -42,4 +42,35 @@ function calculateExercises(
   };
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+if (process.argv.length < 4) {
+  throw new Error(
+    `Incorrect number of arguments (${
+      process.argv.length - 2
+    }). Usage: npm run calculateExercises <target hours> <day one hours> <day two hours> ...`
+  );
+}
+
+const [, , targetArg, ...dailyHoursArgs] = process.argv;
+let target;
+const dailyHours: number[] = [];
+
+try {
+  target = Number(targetArg);
+  if (isNaN(target)) throw new Error();
+} catch (e) {
+  throw new Error(`Target hours ${targetArg} could not be parsed as a number.`);
+}
+
+try {
+  dailyHoursArgs.forEach((arg) => {
+    const hours = Number(arg);
+    if (isNaN(hours)) throw new Error();
+    dailyHours.push(hours);
+  });
+} catch (e) {
+  throw new Error(
+    `Daily hours (${dailyHoursArgs}) could not all be parsed as numbers.`
+  );
+}
+
+console.log(calculateExercises(dailyHours, target));

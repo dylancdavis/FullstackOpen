@@ -6,4 +6,29 @@ function calculateBMI(heightInCm: number, weightInKg: number): String {
   return 'obese';
 }
 
-console.log(calculateBMI(180, 74));
+if (process.argv.length !== 4) {
+  throw new Error(
+    `Incorrect number of arguments (${
+      process.argv.length - 2
+    }). Usage: npm run calculateBmi <height (cm)> <weight (kg)>`
+  );
+}
+
+const [, , heightArg, weightArg] = process.argv;
+let height: number, weight: number;
+
+try {
+  height = Number(heightArg);
+  if (isNaN(height)) throw new Error();
+} catch (e) {
+  throw new Error(`Height ${heightArg} could not be parsed as a number.`);
+}
+
+try {
+  weight = Number(weightArg);
+  if (isNaN(weight)) throw new Error();
+} catch (e) {
+  throw new Error(`Weight ${weightArg} could not be parsed as a number.`);
+}
+
+console.log(calculateBMI(height, weight));
