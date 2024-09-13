@@ -28,6 +28,9 @@ export function calculateExercises(
   dailyExerciseHours: number[],
   targetHours: number
 ): exerciseResult {
+  if (isNaN(targetHours)) throw new Error('Target is not a number');
+  if (dailyExerciseHours.some(isNaN))
+    throw new Error('Daily hours are not all numbers');
   const totalHoursExercised = dailyExerciseHours.reduce((a, b) => a + b, 0);
   const dailyAverageHours = totalHoursExercised / dailyExerciseHours.length;
   const goalRating = getRatingFromAverageHours(dailyAverageHours, targetHours);
