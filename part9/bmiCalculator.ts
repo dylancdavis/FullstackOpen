@@ -1,4 +1,4 @@
-export function calculateBMI(heightInCm: number, weightInKg: number): String {
+export function calculateBMI(heightInCm: number, weightInKg: number): string {
   const bmi = weightInKg / (heightInCm / 100) ** 2;
   if (bmi < 18.5) return 'underweight';
   if (bmi < 25) return 'normal weight';
@@ -21,14 +21,14 @@ if (require.main === module) {
   try {
     height = Number(heightArg);
     if (isNaN(height)) throw new Error();
-  } catch (e) {
+  } catch {
     throw new Error(`Height ${heightArg} could not be parsed as a number.`);
   }
 
   try {
     weight = Number(weightArg);
     if (isNaN(weight)) throw new Error();
-  } catch (e) {
+  } catch {
     throw new Error(`Weight ${weightArg} could not be parsed as a number.`);
   }
 

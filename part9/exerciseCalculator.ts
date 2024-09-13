@@ -57,7 +57,7 @@ const dailyHours: number[] = [];
 try {
   target = Number(targetArg);
   if (isNaN(target)) throw new Error();
-} catch (e) {
+} catch {
   throw new Error(`Target hours ${targetArg} could not be parsed as a number.`);
 }
 
@@ -67,7 +67,7 @@ try {
     if (isNaN(hours)) throw new Error();
     dailyHours.push(hours);
   });
-} catch (e) {
+} catch {
   throw new Error(
     `Daily hours (${dailyHoursArgs}) could not all be parsed as numbers.`
   );
