@@ -1,0 +1,2 @@
+- Run server: `npm run start`
+- Run server with automatic reloading: `npm run dev`
